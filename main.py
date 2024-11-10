@@ -10,6 +10,16 @@ from utils.data_visualizer import (create_histogram, create_box_plot,
 from utils.data_processor import (change_column_type, handle_missing_values,
                                 remove_duplicates, export_data)
 
+def load_test_data():
+    """
+    Загрузка тестового набора данных
+    """
+    try:
+        return pd.read_csv('test_data.csv')
+    except Exception as e:
+        st.error(f"Ошибка при загрузке тестовых данных: {str(e)}")
+        return None
+
 def main():
     st.set_page_config(
         page_title="Анализ данных",
@@ -19,13 +29,24 @@ def main():
 
     st.title("📊 Комплексный анализ данных")
     
-    # Загрузка данных
-    df = get_file_uploader()
+    # Секция загрузки данных
+    st.subheader("Загрузка данных")
     
-    if df is not None:
-        # Сохранение датафрейма в session state
-        if 'df' not in st.session_state:
-            st.session_state['df'] = df
+    # Кнопка загрузки тестовых данных
+    if st.button("📥 Загрузить тестовые данные"):
+        test_df = load_test_data()
+        if test_df is not None:
+            st.session_state['df'] = test_df
+            st.success("Тестовые данные успешно загружены!")
+            
+    # Стандартный загрузчик файлов
+    uploaded_df = get_file_uploader()
+    if uploaded_df is not None:
+        st.session_state['df'] = uploaded_df
+    
+    # Работа с загруженными данными
+    if 'df' in st.session_state:
+        df = st.session_state['df']
         
         # Создание вкладок
         tabs = st.tabs(["Обзор", "Анализ", "Визуализация", "Предобработка", "Экспорт"])
