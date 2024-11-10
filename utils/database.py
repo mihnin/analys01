@@ -2,6 +2,7 @@ import sqlite3
 import pandas as pd
 import streamlit as st
 from datetime import datetime
+import json
 import os
 
 def init_db():
@@ -19,12 +20,59 @@ def init_db():
                 source TEXT
             )
         ''')
+        # Создаем таблицу для хранения состояния анализа
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS analysis_state (
+                id INTEGER PRIMARY KEY,
+                component_name TEXT NOT NULL,
+                state_data TEXT NOT NULL,
+                last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
         conn.commit()
         conn.close()
         return True
     except Exception as e:
         st.error(f"Ошибка при инициализации базы данных: {str(e)}")
         return False
+
+def save_analysis_state(component_name: str, state_data: dict):
+    """
+    Сохранение состояния анализа
+    """
+    try:
+        conn = sqlite3.connect('data.db')
+        cursor = conn.cursor()
+        state_json = json.dumps(state_data)
+        cursor.execute('''
+            INSERT OR REPLACE INTO analysis_state (component_name, state_data, last_update)
+            VALUES (?, ?, CURRENT_TIMESTAMP)
+        ''', (component_name, state_json))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        st.error(f"Ошибка при сохранении состояния: {str(e)}")
+        return False
+
+def load_analysis_state(component_name: str) -> dict:
+    """
+    Загрузка состояния анализа
+    """
+    try:
+        conn = sqlite3.connect('data.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT state_data FROM analysis_state WHERE component_name = ?', 
+                      (component_name,))
+        result = cursor.fetchone()
+        conn.close()
+        
+        if result:
+            return json.loads(result[0])
+        return {}
+    except Exception as e:
+        st.error(f"Ошибка при загрузке состояния: {str(e)}")
+        return {}
 
 def save_dataframe(df, table_name='current_data', source='unknown'):
     """
