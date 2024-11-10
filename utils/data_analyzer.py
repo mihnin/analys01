@@ -5,46 +5,7 @@ from scipy import stats
 import plotly.figure_factory as ff
 from scipy.stats import norm
 
-def get_basic_info(df):
-    """
-    Получение базовой информации о датасете
-    """
-    st.subheader("Обзор данных")
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Количество строк", df.shape[0])
-    with col2:
-        st.metric("Количество столбцов", df.shape[1])
-    with col3:
-        st.metric("Размер данных (MB)", round(df.memory_usage(deep=True).sum() / 1024 / 1024, 2))
-
-def analyze_data_types(df):
-    """
-    Анализ типов данных
-    """
-    st.subheader("Типы данных")
-    dtypes_df = pd.DataFrame({
-        'Столбец': df.dtypes.index,
-        'Тип данных': df.dtypes.values,
-        'Количество null': df.isnull().sum().values,
-        'Процент null': (df.isnull().sum().values / len(df) * 100).round(2)
-    })
-    st.dataframe(dtypes_df)
-
-def analyze_duplicates(df):
-    """
-    Анализ дубликатов
-    """
-    st.subheader("Анализ дубликатов")
-    
-    duplicates = df.duplicated().sum()
-    col1, col2 = st.columns(2)
-    with col1:
-        st.metric("Количество дубликатов", duplicates)
-    with col2:
-        st.metric("Процент дубликатов", round(duplicates / len(df) * 100, 2))
-
+@st.cache_data
 def get_advanced_stats(df, column):
     """
     Расширенный статистический анализ для числового столбца
@@ -91,28 +52,7 @@ def get_advanced_stats(df, column):
     
     return stats_dict
 
-def perform_normality_test(data):
-    """
-    Проведение тестов на нормальность распределения
-    """
-    # Тест Шапиро-Уилка
-    if len(data) < 5000:  # Тест работает эффективно на выборках до 5000
-        shapiro_stat, shapiro_p = stats.shapiro(data)
-    else:
-        shapiro_stat, shapiro_p = None, None
-    
-    # Тест Колмогорова-Смирнова
-    ks_stat, ks_p = stats.kstest(stats.zscore(data), 'norm')
-    
-    # D'Agostino's K^2 тест
-    k2_stat, k2_p = stats.normaltest(data)
-    
-    return {
-        'shapiro': (shapiro_stat, shapiro_p) if shapiro_stat is not None else None,
-        'ks': (ks_stat, ks_p),
-        'k2': (k2_stat, k2_p)
-    }
-
+@st.cache_data
 def analyze_distribution(df, column):
     """
     Расширенный анализ распределения данных
@@ -182,6 +122,72 @@ def analyze_distribution(df, column):
     for interp in interpretation:
         st.write(interp)
 
+def get_basic_info(df):
+    """
+    Получение базовой информации о датасете
+    """
+    st.subheader("Обзор данных")
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Количество строк", df.shape[0])
+    with col2:
+        st.metric("Количество столбцов", df.shape[1])
+    with col3:
+        st.metric("Размер данных (MB)", round(df.memory_usage(deep=True).sum() / 1024 / 1024, 2))
+
+def analyze_data_types(df):
+    """
+    Анализ типов данных
+    """
+    st.subheader("Типы данных")
+    dtypes_df = pd.DataFrame({
+        'Столбец': df.dtypes.index,
+        'Тип данных': df.dtypes.values,
+        'Количество null': df.isnull().sum().values,
+        'Процент null': (df.isnull().sum().values / len(df) * 100).round(2)
+    })
+    st.dataframe(dtypes_df)
+
+def analyze_duplicates(df):
+    """
+    Анализ дубликатов
+    """
+    st.subheader("Анализ дубликатов")
+    
+    duplicates = df.duplicated().sum()
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Количество дубликатов", duplicates)
+    with col2:
+        st.metric("Процент дубликатов", round(duplicates / len(df) * 100, 2))
+
+def perform_normality_test(data):
+    """
+    Оптимизированная версия теста на нормальность
+    """
+    # Если данных слишком много, берем случайную выборку
+    if len(data) > 5000:
+        data = data.sample(n=5000, random_state=42)
+    
+    # Тест Шапиро-Уилка
+    if len(data) < 5000:  # Тест работает эффективно на выборках до 5000
+        shapiro_stat, shapiro_p = stats.shapiro(data)
+    else:
+        shapiro_stat, shapiro_p = None, None
+    
+    # Тест Колмогорова-Смирнова
+    ks_stat, ks_p = stats.kstest(stats.zscore(data), 'norm')
+    
+    # D'Agostino's K^2 тест
+    k2_stat, k2_p = stats.normaltest(data)
+    
+    return {
+        'shapiro': (shapiro_stat, shapiro_p) if shapiro_stat is not None else None,
+        'ks': (ks_stat, ks_p),
+        'k2': (k2_stat, k2_p)
+    }
+
 def get_numerical_stats(df):
     """
     Получение статистики по числовым данным
@@ -245,7 +251,7 @@ def analyze_outliers(df, column):
         outliers_stats = outliers.describe()
         st.dataframe(pd.DataFrame({
             'Статистика': outliers_stats.index,
-            'Значение': outliers_stats.values
+            '��начение': outliers_stats.values
         }))
     
     return lower_bound, upper_bound
