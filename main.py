@@ -22,8 +22,9 @@ from utils.database import (init_db, save_dataframe, load_dataframe, delete_data
                           get_table_info, get_last_update, save_analysis_state,
                           load_analysis_state)
 from utils.report_generator import generate_data_report
+from utils.logging_config import setup_logging
 
-# Настройка расширенного логирования
+# Текущая настройка логирования
 log_handler = logging.handlers.RotatingFileHandler(
     'app.log',
     maxBytes=1024*1024,
@@ -32,8 +33,11 @@ log_handler = logging.handlers.RotatingFileHandler(
 logging.basicConfig(
     handlers=[log_handler],
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(name)s - %(levellevel)s - %(message)s'
 )
+
+# Инициализируем логирование
+logger = setup_logging()
 
 def handle_error(func):
     """Декоратор для обработки ошибок"""
@@ -166,7 +170,7 @@ def main():
                 index=tab_names.index(st.session_state.active_tab)
             )
 
-        # Отображение содержимого в завис��мости от выбранной вкладки
+        # Отображение содержимого в зависимости от выбранной вкладки
         if st.session_state.active_tab == "Обзор":
             st.header("Обзор")
             get_basic_info(df)
@@ -338,6 +342,7 @@ def main():
                     st.rerun()
         
         elif st.session_state.active_tab == "Отчеты":
+            logger.info("Открыта вкладка генерации отчетов")
             st.header("Отчеты")
             st.subheader("Генерация отчетов")
             report_sections = st.multiselect(
@@ -346,24 +351,63 @@ def main():
                  "Пропущенные значения", "Дубликаты"],
                 default=["Базовая информация", "Типы данных", "Статистика"]
             )
+            
             if st.button("📄 Сгенерировать отчет"):
+                logger.info("Нажата кнопка генерации отчета")
                 if report_sections:
                     try:
-                        report_filename = generate_data_report(df, sections=report_sections, fname='data_analysis_report.pdf')
-                        if report_filename:
-                            with open(report_filename, 'rb') as file:
-                                st.download_button(
-                                    label="⬇️ Скачать отчет",
-                                    data=file,
-                                    file_name=report_filename,
-                                    mime="application/pdf"
-                                )
-                            st.success("✅ Отчет успешно сгенерирован")
-                            save_current_state()
+                        logger.info(f"Начало генерации отчета. Выбранные секции: {report_sections}")
+                        # Создаем директорию для отчетов если её нет
+                        reports_dir = Path("reports")
+                        reports_dir.mkdir(exist_ok=True)
+                        logger.debug(f"Директория для отчетов: {reports_dir}")
+                        
+                        # Генерация имени файла
+                        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                        report_filename = f'data_analysis_report_{timestamp}.pdf'
+                        logger.debug(f"Сгенерировано имя файла: {report_filename}")
+                        
+                        logging.info(f"Начало генерации отчета: {report_filename}")
+                        
+                        # Предварительная обработка DataFrame
+                        df_processed = df.copy()
+                        for col in df_processed.select_dtypes(include=['object', 'category']).columns:
+                            df_processed[col] = df_processed[col].astype(str)
+                        
+                        # Генерация отчета
+                        result = generate_data_report(
+                            df=df_processed,
+                            sections=report_sections,
+                            fname=report_filename  # Явно передаем имя файла
+                        )
+                        
+                        if result:
+                            report_path = Path(result)
+                            if report_path.is_file():
+                                with open(report_path, 'rb') as file:
+                                    st.download_button(
+                                        label="⬇️ Скачать отчет",
+                                        data=file,
+                                        file_name=report_path.name,
+                                        mime="application/pdf"
+                                    )
+                                st.success(f"✅ Отчет успешно сгенерирован: {report_path.name}")
+                                logger.info(f"Отчет успешно создан: {report_path}")
+                            else:
+                                st.error(f"Файл отчета не найден: {report_path}")
+                        else:
+                            st.error("Не удалось сгенерировать отчет")
+                            logger.error("Не удалось создать отчет")
+                            
                     except Exception as e:
-                        st.error(f"Ошибка при генерации отчета: {str(e)}")
+                        error_msg = f"Ошибка при генерации отчета: {str(e)}"
+                        logging.error(error_msg, exc_info=True)
+                        st.error(error_msg)
+                        logger.exception(f"Ошибка при генерации отчета: {str(e)}")
+                        raise
                 else:
-                    st.warning("Выберите хотя б�� один раздел для отчета")
+                    st.warning("Выберите хотя бы один раздел для отчета")
+                    logger.warning("Не выбраны секции для отчета")
 
 if __name__ == "__main__":
     main()

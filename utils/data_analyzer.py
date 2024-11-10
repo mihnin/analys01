@@ -117,7 +117,7 @@ def analyze_distribution(df, column):
     if normal_count >= 2:
         interpretation.append("✅ Распределение можно считать нормальным")
     else:
-        interpretation.append("⚠️ Распределение существенно отличается от нормального")
+        interpretation.append("⚠️ Распределение существенно отличается от нормальн��го")
     
     for interp in interpretation:
         st.write(interp)
@@ -137,16 +137,25 @@ def get_basic_info(df):
         st.metric("Размер данных (MB)", round(df.memory_usage(deep=True).sum() / 1024 / 1024, 2))
 
 def analyze_data_types(df):
-    """
-    Анализ типов данных
-    """
+    """Анализ типов данных"""
     st.subheader("Типы данных")
-    dtypes_df = pd.DataFrame({
-        'Столбец': df.dtypes.index,
-        'Тип данных': df.dtypes.values,
-        'Количество null': df.isnull().sum().values,
-        'Процент null': (df.isnull().sum().values / len(df) * 100).round(2)
+    
+    # Создаем словарь с предварительно преобразованными типами
+    data = {
+        'Столбец': list(df.dtypes.index),
+        'Тип данных': [str(dtype) for dtype in df.dtypes.values],  # Преобразуем в строки
+        'Количество null': list(df.isnull().sum().values),
+        'Процент null': list((df.isnull().sum().values / len(df) * 100).round(2))
+    }
+    
+    # Создаем DataFrame с явно указанными типами
+    dtypes_df = pd.DataFrame(data).astype({
+        'Столбец': str,
+        'Тип данных': str,
+        'Количество null': int,
+        'Процент null': float
     })
+    
     st.dataframe(dtypes_df)
 
 def analyze_duplicates(df):
@@ -251,7 +260,7 @@ def analyze_outliers(df, column):
         outliers_stats = outliers.describe()
         st.dataframe(pd.DataFrame({
             'Статистика': outliers_stats.index,
-            '��начение': outliers_stats.values
+            'Значение': outliers_stats.values
         }))
     
     return lower_bound, upper_bound

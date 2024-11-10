@@ -4,10 +4,13 @@ import numpy as np
 from fpdf.fpdf import FPDF
 import io
 from datetime import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ReportGenerator:
     def __init__(self, df: pd.DataFrame):
-        self.df = df
+        self.df = self._prepare_datatypes(df)
         self.pdf = FPDF()
         self.pdf.add_page()
         
@@ -17,6 +20,31 @@ class ReportGenerator:
         
         # Enable auto page break
         self.pdf.set_auto_page_break(auto=True, margin=15)
+
+    def _prepare_datatypes(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Подготовка типов данных для совместимости с Arrow"""
+        try:
+            # Создаем копию датафрейма
+            df_processed = df.copy()
+            
+            # Конвертируем object колонки в string
+            object_columns = df_processed.select_dtypes(include=['object']).columns
+            for col in object_columns:
+                df_processed[col] = df_processed[col].astype(str)
+                
+            # Конвертируем category в string
+            category_columns = df_processed.select_dtypes(include=['category']).columns
+            for col in category_columns:
+                df_processed[col] = df_processed[col].astype(str)
+                
+            logging.info(f"Типы данных успешно преобразованы для {len(object_columns) + len(category_columns)} колонок")
+            return df_processed
+            
+        except Exception as e:
+            error_msg = f"Ошибка при подготовке типов данных: {str(e)}"
+            logging.error(error_msg)
+            st.error(error_msg)
+            return df
 
     def add_title(self, title):
         """Добавление заголовка в отчет"""
@@ -117,9 +145,20 @@ class ReportGenerator:
         except Exception as e:
             st.error(f"Ошибка при добавлении информации о дубликатах: {str(e)}")
 
-    def generate_report(self, sections=None, fname='report.pdf'):
+    def generate_report(self, sections=None, fname: str = None):
         """Генерация полного отчета"""
         try:
+            logger.info(f"Начало генерации отчета. Параметры: fname={fname}, sections={sections}")
+            
+            if fname is None:
+                raise ValueError("Параметр 'fname' обязателен для создания отчета")
+            
+            logger.debug(f"Проверка DataFrame: shape={self.df.shape}, dtypes={self.df.dtypes}")
+            
+            # Проверяем, что данные готовы к обработке
+            if self.df is None:
+                raise ValueError("Датафрейм не был корректно инициализирован")
+                
             # Добавление заголовка и даты
             self.add_title("Отчет по анализу данных")
             self.add_text(f"Дата создания: {datetime.now().strftime('%d.%m.%Y %H:%M:%S')}")
@@ -129,34 +168,74 @@ class ReportGenerator:
                 sections = ["Базовая информация", "Типы данных", "Статистика", 
                            "Пропущенные значения", "Дубликаты"]
             
-            # Добавление выбранных разделов
-            if "Базовая информация" in sections:
-                self.add_basic_info()
-            if "Типы данных" in sections:
-                self.add_data_types()
-            if "Статистика" in sections:
-                self.add_numerical_stats()
-            if "Пропущенные значения" in sections:
-                self.add_missing_values()
-            if "Дубликаты" in sections:
-                self.add_duplicates_info()
+            # Добавление выбранных разделов с информированием
+            for section in sections:
+                logger.info(f"Обработка секции: {section}")
+                if section == "Базовая информация":
+                    logger.debug(f"Добавление базовой информации: rows={self.df.shape[0]}, cols={self.df.shape[1]}")
+                    self.add_basic_info()
+                elif section == "Типы данных":
+                    self.add_data_types()
+                elif section == "Статистика":
+                    self.add_numerical_stats()
+                elif section == "Пропущенные значения":
+                    self.add_missing_values()
+                elif section == "Дубликаты":
+                    self.add_duplicates_info()
 
+            logger.info(f"Сохранение отчета в файл: {fname}")
             # Сохранение PDF в файл
             try:
                 self.pdf.output(fname)
+                logging.info(f"Отчет успешно сохранен: {fname}")
                 return fname
             except Exception as e:
-                st.error(f"Ошибка при создании PDF: {str(e)}")
+                error_msg = f"Ошибка при создании PDF: {str(e)}"
+                logging.error(error_msg)
+                st.error(error_msg)
                 return None
         except Exception as e:
-            st.error(f"Ошибка при генерации отчета: {str(e)}")
+            logger.exception(f"Ошибка при генерации отчета: {str(e)}")
+            error_msg = f"Ошибка при генерации отчета: {str(e)}"
+            logging.error(error_msg)
+            st.error(error_msg)
             return None
 
-def generate_data_report(df: pd.DataFrame, sections=None, fname='report.pdf') -> str:
+def generate_data_report(df: pd.DataFrame, sections=None, fname: str = None) -> str:
     """Создание отчета для датафрейма"""
+    logger = logging.getLogger(__name__)
+    
     try:
+        # Обязательно проверяем и создаём имя файла
+        if not fname:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            fname = f'data_analysis_report_{timestamp}.pdf'
+        
+        # Абсолютный путь для отчета
+        reports_dir = Path.cwd() / 'reports'
+        reports_dir.mkdir(exist_ok=True)
+        
+        # Полный путь к файлу отчета
+        full_path = str(reports_dir / fname)
+        logger.info(f"Создание отчета: {full_path}")
+        
+        # Создаем генератор отчетов
         generator = ReportGenerator(df)
-        return generator.generate_report(sections=sections, fname=fname)
+        
+        # Передаем полный путь в generate_report
+        result = generator.generate_report(sections=sections, fname=full_path)
+        
+        if not result:
+            logger.error("Не удалось создать отчет")
+            return None
+            
+        if not Path(result).exists():
+            logger.error(f"Файл отчета не найден: {result}")
+            return None
+            
+        logger.info(f"Отчет успешно создан: {result}")
+        return result
+        
     except Exception as e:
-        st.error(f"Ошибка при создании отчета: {str(e)}")
+        logger.exception(f"Ошибка при создании отчета: {str(e)}")
         return None
