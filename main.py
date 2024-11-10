@@ -37,6 +37,17 @@ def format_datetime(dt):
         return dt.strftime("%d.%m.%Y %H:%M:%S")
     return "Нет данных"
 
+def get_source_name(source):
+    """
+    Преобразование технического названия источника в понятное пользователю
+    """
+    source_mapping = {
+        'test_data': 'Тестовые данные',
+        'file_upload': 'Загруженный файл',
+        'unknown': 'Данные'
+    }
+    return source_mapping.get(source, 'Данные')
+
 def check_data_quality(df, target, features):
     """
     Проверка качества данных перед обучением модели
@@ -110,16 +121,16 @@ def main():
         
         # Получаем информацию о таблице
         table_info = get_table_info()
-        data_source = table_info['source'] if table_info else 'unknown'
+        source_name = get_source_name(table_info['source'] if table_info else 'unknown')
         
         # Создание вкладок
         tabs = st.tabs([
-            f"Обзор [{data_source}]", 
-            f"Анализ [{data_source}]", 
-            f"Визуализация [{data_source}]",
-            f"Прогнозирование [{data_source}]", 
-            f"Предобработка [{data_source}]",
-            f"Экспорт [{data_source}]",
+            "Обзор", 
+            "Анализ", 
+            "Визуализация",
+            "Прогнозирование", 
+            "Предобработка",
+            "Экспорт",
             "База данных"
         ])
         
@@ -248,9 +259,7 @@ def main():
                                 
                                 # Визуализация результатов
                                 st.subheader("📈 Важность признаков:")
-                                plot_feature_importance(model, 
-                                                    pd.get_dummies(df[feature_columns], 
-                                                                drop_first=True).columns)
+                                plot_feature_importance(model, feature_columns)
                                 
                                 st.subheader("🎯 Сравнение прогнозов с фактическими значениями:")
                                 plot_predictions(y_test, predictions, task_type)
@@ -347,7 +356,7 @@ def main():
                 with col2:
                     st.metric("Размер БД (МБ)", table_info['size'])
                 with col3:
-                    st.metric("Источник данных", table_info['source'])
+                    st.metric("Источник данных", get_source_name(table_info['source']))
                 with col4:
                     st.metric("Последнее обновление", 
                              format_datetime(datetime.fromisoformat(table_info['last_update'])))
