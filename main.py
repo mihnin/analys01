@@ -2,10 +2,17 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import logging
+from pathlib import Path
+import logging.handlers
+from typing import Optional, Dict, Any, List, Tuple  # Импортируем все необходимые типы
+
+# Группировка импортов
 from utils.data_loader import get_file_uploader
-from utils.data_analyzer import (get_basic_info, analyze_data_types, 
-                               analyze_duplicates, get_numerical_stats,
-                               analyze_outliers)
+from utils.data_analyzer import (
+    get_basic_info, analyze_data_types, analyze_duplicates, 
+    get_numerical_stats, analyze_outliers
+)
 from utils.data_visualizer import (create_histogram, create_box_plot, 
                                create_scatter_plot, plot_correlation_matrix,
                                plot_missing_values, plot_outliers)
@@ -15,6 +22,38 @@ from utils.database import (init_db, save_dataframe, load_dataframe, delete_data
                           get_table_info, get_last_update, save_analysis_state,
                           load_analysis_state)
 from utils.report_generator import generate_data_report
+
+# Настройка расширенного логирования
+log_handler = logging.handlers.RotatingFileHandler(
+    'app.log',
+    maxBytes=1024*1024,
+    backupCount=5
+)
+logging.basicConfig(
+    handlers=[log_handler],
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+def handle_error(func):
+    """Декоратор для обработки ошибок"""
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logging.error(f"Error in {func.__name__}: {str(e)}")
+            st.error(f"Произошла ошибка: {str(e)}")
+            return None
+    return wrapper
+
+@handle_error
+def load_state() -> Optional[dict]:
+    """Загрузка состояния с обработкой ошибок"""
+    state = load_analysis_state('main_app')
+    if state:
+        st.session_state.update(state)
+        return state
+    return None
 
 def initialize_session_state():
     """
@@ -31,12 +70,19 @@ def load_test_data():
     """
     Загрузка тестового набора данных
     """
+    test_file = Path('test_data.csv')
+    if not test_file.exists():
+        st.error("Тестовый файл не найден")
+        logging.error("Test file not found: test_data.csv")
+        return None
     try:
-        df = pd.read_csv('test_data.csv')
+        df = pd.read_csv(test_file)
         if save_dataframe(df, source='test_data'):
             st.success("✅ Тестовые данные успешно сохранены в базу данных")
+            logging.info("Test data successfully loaded and saved")
         return df
     except Exception as e:
+        logging.error(f"Error loading test data: {str(e)}")
         st.error(f"Ошибка при загрузке тестовых данных: {str(e)}")
         return None
 

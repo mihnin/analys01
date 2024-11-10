@@ -1,31 +1,81 @@
+from typing import Optional, Dict, Tuple, List, Any
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 from scipy import stats
+import logging
+import pandas as pd  # Добавляем импорт pandas
 
-def analyze_distribution(data):
-    """
-    Анализ распределения данных
-    """
-    skewness = stats.skew(data.dropna())
-    kurtosis = stats.kurtosis(data.dropna())
-    statistic, p_value = stats.normaltest(data.dropna())
+@st.cache_data(ttl=3600)
+def compute_distribution_stats(data: pd.Series) -> Dict[str, Any]:
+    """Кэшированное вычисление статистик распределения"""
+    try:
+        if data.empty:
+            raise ValueError("Empty data series")
+            
+        clean_data = data.dropna()
+        return {
+            'mean': clean_data.mean(),
+            'median': clean_data.median(),
+            'std': clean_data.std(),
+            'skew': stats.skew(clean_data),
+            'kurtosis': stats.kurtosis(clean_data)
+        }
+    except Exception as e:
+        logging.error(f"Error computing distribution stats: {str(e)}")
+        return None
+
+@st.cache_data(ttl=3600)
+def compute_correlation_matrix(df: pd.DataFrame) -> Tuple[pd.DataFrame, List[Dict]]:
+    """Кэшированное вычисление корреляционной матрицы"""
+    try:
+        numerical_cols = df.select_dtypes(include=[np.number]).columns
+        if len(numerical_cols) < 2:
+            raise ValueError("Not enough numerical columns")
+            
+        corr_matrix = df[numerical_cols].corr()
+        strong_correlations = [
+            {'pair': f"{col1} - {col2}", 'correlation': corr_matrix.loc[col1, col2]}
+            for col1 in numerical_cols
+            for col2 in numerical_cols
+            if col1 < col2 and abs(corr_matrix.loc[col1, col2]) > 0.7
+        ]
+        return corr_matrix, strong_correlations
+    except Exception as e:
+        logging.error(f"Error computing correlation matrix: {str(e)}")
+        return None, []
+
+@st.cache_data
+def analyze_distribution(data: pd.Series) -> Dict[str, Any]:
+    """Анализ распределения данных с кэшированием"""
+    if data.empty:
+        return {
+            'skewness': None,
+            'kurtosis': None,
+            'p_value': None,
+            'distribution': 'недостаточно данных'
+        }
     
-    distribution_text = ""
-    if abs(skewness) < 0.5:
-        distribution_text = "близко к нормальному"
-    elif skewness > 0:
-        distribution_text = "правосторонняя асимметрия"
-    else:
-        distribution_text = "левосторонняя асимметрия"
+    try:
+        data_clean = data.dropna()
+        skewness = stats.skew(data_clean)
+        kurtosis = stats.kurtosis(data_clean)
+        statistic, p_value = stats.normaltest(data_clean)
         
-    return {
-        'skewness': round(skewness, 2),
-        'kurtosis': round(kurtosis, 2),
-        'p_value': p_value,
-        'distribution': distribution_text
-    }
+        distribution_text = ("близко к нормальному" if abs(skewness) < 0.5 
+                           else "правосторонняя асимметрия" if skewness > 0 
+                           else "левосторонняя асимметрия")
+        
+        return {
+            'skewness': round(skewness, 2),
+            'kurtosis': round(kurtosis, 2),
+            'p_value': p_value,
+            'distribution': distribution_text
+        }
+    except Exception as e:
+        logging.error(f"Error in distribution analysis: {str(e)}")
+        return None
 
 def create_histogram(df, column):
     """
