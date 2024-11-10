@@ -56,15 +56,9 @@ def load_state() -> Optional[dict]:
     return None
 
 def initialize_session_state():
-    """
-    Инициализация состояния сессии
-    """
+    """Инициализация состояния сессии"""
     if 'active_tab' not in st.session_state:
-        st.session_state.active_tab = 0
-    if 'state_loaded' not in st.session_state:
-        st.session_state.state_loaded = False
-    if 'last_save_time' not in st.session_state:
-        st.session_state.last_save_time = datetime.now()
+        st.session_state.active_tab = "Обзор"
 
 def load_test_data():
     """
@@ -87,9 +81,7 @@ def load_test_data():
         return None
 
 def save_current_state():
-    """
-    Сохранение текущего состояния анализа
-    """
+    """Сохранение текущего состояния анализа"""
     try:
         current_time = datetime.now()
         state = {
@@ -155,10 +147,10 @@ def main():
     if 'df' in st.session_state:
         df = st.session_state['df']
         
-        # Определение вкладок
+        # Определение названий вкладок
         tab_names = [
-            "Обзор", 
-            "Анализ", 
+            "Обзор",
+            "Анализ",
             "Визуализация",
             "Предобработка",
             "Экспорт",
@@ -166,37 +158,26 @@ def main():
             "Отчеты"
         ]
         
-        # Создание навигации в сайдбаре
+        # Навигация в боковой панели
         with st.sidebar:
-            st.write(f"🔍 Текущая активная вкладка: {st.session_state.active_tab}")
-            
-            selected_tab = st.radio(
+            st.session_state.active_tab = st.radio(
                 "Навигация",
                 tab_names,
-                index=st.session_state.active_tab
+                index=tab_names.index(st.session_state.active_tab)
             )
-            
-            # Обновляем активную вкладку при изменении
-            current_tab_index = tab_names.index(selected_tab)
-            if current_tab_index != st.session_state.active_tab:
-                st.session_state.active_tab = current_tab_index
-                save_current_state()
-        
-        # Создание вкладок
-        tabs = st.tabs(tab_names)
-        
-        # Вкладка обзора
-        with tabs[0]:
+
+        # Отображение содержимого в завис��мости от выбранной вкладки
+        if st.session_state.active_tab == "Обзор":
+            st.header("Обзор")
             get_basic_info(df)
             st.dataframe(df.head())
             analyze_data_types(df)
         
-        # Вкладка анализа
-        with tabs[1]:
+        elif st.session_state.active_tab == "Анализ":
+            st.header("Анализ")
             analyze_duplicates(df)
             get_numerical_stats(df)
             plot_missing_values(df)
-            
             # Анализ выбросов
             st.subheader("Анализ выбросов")
             numerical_cols = df.select_dtypes(include=[np.number]).columns
@@ -213,16 +194,14 @@ def main():
             else:
                 st.info("В датасете нет числовых столбцов для анализа выбросов")
         
-        # Вкладка визуализации
-        with tabs[2]:
+        elif st.session_state.active_tab == "Визуализация":
+            st.header("Визуализация")
             st.subheader("Визуализация данных")
-            
             viz_type = st.selectbox(
                 "Выберите тип визуализации", 
                 ["Гистограмма", "Box Plot", "Scatter Plot", "Корреляционная матрица"],
                 key="viz_type"
             )
-            
             if viz_type in ["Гистограмма", "Box Plot"]:
                 numerical_cols = df.select_dtypes(include=[np.number]).columns
                 if len(numerical_cols) > 0:
@@ -238,7 +217,6 @@ def main():
                             create_box_plot(df, column)
                 else:
                     st.info("В датасете нет числовых столбцов для визуализации")
-                    
             elif viz_type == "Scatter Plot":
                 numerical_cols = df.select_dtypes(include=[np.number]).columns
                 if len(numerical_cols) > 0:
@@ -259,20 +237,17 @@ def main():
                         create_scatter_plot(df, x_column, y_column)
                 else:
                     st.info("В датасете нет числовых столбцов для визуализации")
-                
             else:  # Корреляционная матрица
                 plot_correlation_matrix(df)
         
-        # Вкладка предобработки
-        with tabs[3]:
+        elif st.session_state.active_tab == "Предобработка":
+            st.header("Предобработка")
             st.subheader("Предобработка данных")
-            
             process_type = st.selectbox(
                 "Выберите тип обработки", 
                 ["Изменение типов данных", "Обработка пропусков", "Удаление дубликатов"],
                 key="process_type"
             )
-            
             if process_type == "Изменение типов данных":
                 col1, col2 = st.columns(2)
                 with col1:
@@ -287,7 +262,6 @@ def main():
                         ['int64', 'float64', 'str', 'category'],
                         key="new_type"
                     )
-                
                 if st.button("Применить"):
                     df, success = change_column_type(df, column, new_type)
                     if success:
@@ -295,7 +269,6 @@ def main():
                         save_dataframe(df)
                         st.success("✅ Тип данных успешно изменен")
                         save_current_state()
-                        
             elif process_type == "Обработка пропусков":
                 col1, col2 = st.columns(2)
                 with col1:
@@ -310,11 +283,9 @@ def main():
                         ['drop', 'fill_value', 'fill_mean', 'fill_median'],
                         key="missing_method"
                     )
-                
                 value = None
                 if method == 'fill_value':
                     value = st.text_input("Введите значение для заполнения", key="fill_value")
-                
                 if st.button("Применить"):
                     df, success = handle_missing_values(df, column, method, value)
                     if success:
@@ -322,7 +293,6 @@ def main():
                         save_dataframe(df)
                         st.success("✅ Пропущенные значения обработаны")
                         save_current_state()
-                        
             else:  # Удаление дубликатов
                 if st.button("Удалить дубликаты"):
                     df, success = remove_duplicates(df)
@@ -332,15 +302,13 @@ def main():
                         st.success("✅ Дубликаты удалены")
                         save_current_state()
         
-        # Вкладка экспорта
-        with tabs[4]:
+        elif st.session_state.active_tab == "Экспорт":
+            st.header("Экспорт")
             st.subheader("Экспорт данных")
-            
             format_type = st.selectbox(
                 "Выберите формат экспорта",
                 ['csv', 'excel']
             )
-            
             if st.button("Экспортировать"):
                 result = export_data(df, format_type)
                 if result and len(result) == 3:
@@ -354,34 +322,30 @@ def main():
                             mime=mime_type
                         )
         
-        # Вкладка базы данных
-        with tabs[5]:
+        elif st.session_state.active_tab == "База данных":
+            st.header("База данных")
             st.subheader("Управление базой данных")
-            
             table_info = get_table_info()
             if table_info:
                 st.write(f"**Текущий источник данных:** {table_info['source']}")
                 st.write(f"**Количество строк:** {table_info['rows']}")
                 st.write(f"**Размер базы данных:** {table_info['size']} МБ")
                 st.write(f"**Последнее обновление:** {table_info['last_update']}")
-            
             if st.button("❌ Очистить базу данных"):
                 if delete_dataframe():
                     st.session_state.pop('df', None)
                     st.success("✅ База данных успешно очищена")
                     st.rerun()
         
-        # Вкладка отчетов
-        with tabs[6]:
+        elif st.session_state.active_tab == "Отчеты":
+            st.header("Отчеты")
             st.subheader("Генерация отчетов")
-            
             report_sections = st.multiselect(
                 "Выберите разделы для отчета",
                 ["Базовая информация", "Типы данных", "Статистика", 
                  "Пропущенные значения", "Дубликаты"],
                 default=["Базовая информация", "Типы данных", "Статистика"]
             )
-            
             if st.button("📄 Сгенерировать отчет"):
                 if report_sections:
                     try:
@@ -399,7 +363,7 @@ def main():
                     except Exception as e:
                         st.error(f"Ошибка при генерации отчета: {str(e)}")
                 else:
-                    st.warning("Выберите хотя бы один раздел для отчета")
+                    st.warning("Выберите хотя б�� один раздел для отчета")
 
 if __name__ == "__main__":
     main()
