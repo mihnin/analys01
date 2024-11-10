@@ -117,7 +117,7 @@ class ReportGenerator:
         except Exception as e:
             st.error(f"Ошибка при добавлении информации о дубликатах: {str(e)}")
 
-    def generate_report(self, sections=None):
+    def generate_report(self, sections=None, fname='report.pdf'):
         """Генерация полного отчета"""
         try:
             # Добавление заголовка и даты
@@ -141,11 +141,10 @@ class ReportGenerator:
             if "Дубликаты" in sections:
                 self.add_duplicates_info()
 
-            # Используем BytesIO для генерации PDF
+            # Сохранение PDF в файл
             try:
-                pdf_buffer = io.BytesIO()
-                self.pdf.output(pdf_buffer)
-                return pdf_buffer.getvalue()
+                self.pdf.output(fname)
+                return fname
             except Exception as e:
                 st.error(f"Ошибка при создании PDF: {str(e)}")
                 return None
@@ -153,11 +152,11 @@ class ReportGenerator:
             st.error(f"Ошибка при генерации отчета: {str(e)}")
             return None
 
-def generate_data_report(df: pd.DataFrame, sections=None) -> bytes:
+def generate_data_report(df: pd.DataFrame, sections=None, fname='report.pdf') -> str:
     """Создание отчета для датафрейма"""
     try:
         generator = ReportGenerator(df)
-        return generator.generate_report(sections=sections)
+        return generator.generate_report(sections=sections, fname=fname)
     except Exception as e:
         st.error(f"Ошибка при создании отчета: {str(e)}")
         return None

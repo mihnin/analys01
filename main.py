@@ -40,108 +40,27 @@ def load_test_data():
         st.error(f"Ошибка при загрузке тестовых данных: {str(e)}")
         return None
 
-def format_datetime(dt):
-    """
-    Форматирование даты и времени
-    """
-    if dt:
-        return dt.strftime("%d.%m.%Y %H:%M:%S")
-    return "Нет данных"
-
-def get_source_name(source):
-    """
-    Преобразование технического названия источника в понятное пользователю
-    """
-    source_mapping = {
-        'test_data': 'Тестовые данные',
-        'file_upload': 'Загруженный файл',
-        'unknown': 'Данные'
-    }
-    return source_mapping.get(source, 'Данные')
-
 def save_current_state():
     """
     Сохранение текущего состояния анализа
     """
     try:
         current_time = datetime.now()
-        if 'last_save_time' in st.session_state:
-            time_diff = (current_time - st.session_state.last_save_time).total_seconds()
-            if time_diff < 1:  # Минимальный интервал между сохранениями
-                return
-
         state = {
+            'active_tab': st.session_state.active_tab,
             'viz_settings': {
                 'viz_type': st.session_state.get('viz_type', 'Гистограмма'),
                 'viz_column': st.session_state.get('viz_column'),
-                'scatter_x': st.session_state.get('scatter_x'),
-                'scatter_y': st.session_state.get('scatter_y'),
-                'corr_matrix_shown': st.session_state.get('corr_matrix_shown', False)
             },
             'process_settings': {
                 'process_type': st.session_state.get('process_type', 'Изменение типов данных'),
                 'change_type_column': st.session_state.get('change_type_column'),
-                'new_type': st.session_state.get('new_type', 'int64'),
-                'missing_column': st.session_state.get('missing_column'),
-                'missing_method': st.session_state.get('missing_method', 'drop'),
-                'fill_value': st.session_state.get('fill_value')
-            },
-            'analysis_settings': {
-                'outliers_column': st.session_state.get('outliers_column'),
-                'selected_stats_column': st.session_state.get('selected_stats_column')
-            },
-            'report_settings': {
-                'selected_sections': st.session_state.get('selected_sections', 
-                    ["Базовая информация", "Типы данных", "Статистика"])
-            },
-            'active_tab': st.session_state.active_tab
+            }
         }
         if save_analysis_state('main_app', state):
             st.session_state.last_save_time = current_time
     except Exception as e:
         st.error(f"Ошибка при сохранении состояния: {str(e)}")
-
-def load_saved_state():
-    """
-    Загрузка сохраненного состояния анализа
-    """
-    try:
-        state = load_analysis_state('main_app')
-        if state:
-            # Visualization settings
-            viz_settings = state.get('viz_settings', {})
-            st.session_state['viz_type'] = viz_settings.get('viz_type', 'Гистограмма')
-            st.session_state['viz_column'] = viz_settings.get('viz_column')
-            st.session_state['scatter_x'] = viz_settings.get('scatter_x')
-            st.session_state['scatter_y'] = viz_settings.get('scatter_y')
-            st.session_state['corr_matrix_shown'] = viz_settings.get('corr_matrix_shown', False)
-            
-            # Processing settings
-            process_settings = state.get('process_settings', {})
-            st.session_state['process_type'] = process_settings.get('process_type', 'Изменение типов данных')
-            st.session_state['change_type_column'] = process_settings.get('change_type_column')
-            st.session_state['new_type'] = process_settings.get('new_type', 'int64')
-            st.session_state['missing_column'] = process_settings.get('missing_column')
-            st.session_state['missing_method'] = process_settings.get('missing_method', 'drop')
-            st.session_state['fill_value'] = process_settings.get('fill_value')
-            
-            # Analysis settings
-            analysis_settings = state.get('analysis_settings', {})
-            st.session_state['outliers_column'] = analysis_settings.get('outliers_column')
-            st.session_state['selected_stats_column'] = analysis_settings.get('selected_stats_column')
-            
-            # Report settings
-            report_settings = state.get('report_settings', {})
-            st.session_state['selected_sections'] = report_settings.get('selected_sections', 
-                ["Базовая информация", "Типы данных", "Статистика"])
-            
-            # Active tab
-            st.session_state.active_tab = state.get('active_tab', 0)
-            
-            return True
-    except Exception as e:
-        st.error(f"Ошибка при загрузке состояния: {str(e)}")
-    return False
 
 def main():
     st.set_page_config(
@@ -157,11 +76,6 @@ def main():
     if not init_db():
         st.error("Не удалось инициализировать базу данных")
         return
-
-    # Загрузка сохраненного состояния при первом запуске
-    if not st.session_state.state_loaded:
-        if load_saved_state():
-            st.session_state.state_loaded = True
 
     st.title("📊 Комплексный анализ данных")
     
@@ -195,10 +109,6 @@ def main():
     if 'df' in st.session_state:
         df = st.session_state['df']
         
-        # Получаем информацию о таблице
-        table_info = get_table_info()
-        source_name = get_source_name(table_info['source'] if table_info else 'unknown')
-        
         # Определение вкладок
         tab_names = [
             "Обзор", 
@@ -212,14 +122,16 @@ def main():
         
         # Создание навигации в сайдбаре
         with st.sidebar:
+            st.write(f"🔍 Текущая активная вкладка: {st.session_state.active_tab}")
+            
             selected_tab = st.radio(
                 "Навигация",
                 tab_names,
                 index=st.session_state.active_tab
             )
-            current_tab_index = tab_names.index(selected_tab)
             
-            # Update active tab if changed
+            # Обновляем активную вкладку при изменении
+            current_tab_index = tab_names.index(selected_tab)
             if current_tab_index != st.session_state.active_tab:
                 st.session_state.active_tab = current_tab_index
                 save_current_state()
@@ -400,11 +312,12 @@ def main():
         with tabs[5]:
             st.subheader("Управление базой данных")
             
+            table_info = get_table_info()
             if table_info:
-                st.write(f"**Текущий источник данных:** {source_name}")
+                st.write(f"**Текущий источник данных:** {table_info['source']}")
                 st.write(f"**Количество строк:** {table_info['rows']}")
                 st.write(f"**Размер базы данных:** {table_info['size']} МБ")
-                st.write(f"**Последнее обновление:** {format_datetime(datetime.fromisoformat(table_info['last_update']))}")
+                st.write(f"**Последнее обновление:** {table_info['last_update']}")
             
             if st.button("❌ Очистить базу данных"):
                 if delete_dataframe():
@@ -420,22 +333,21 @@ def main():
                 "Выберите разделы для отчета",
                 ["Базовая информация", "Типы данных", "Статистика", 
                  "Пропущенные значения", "Дубликаты"],
-                default=st.session_state.get('selected_sections', 
-                    ["Базовая информация", "Типы данных", "Статистика"]),
-                key="selected_sections"
+                default=["Базовая информация", "Типы данных", "Статистика"]
             )
             
             if st.button("📄 Сгенерировать отчет"):
                 if report_sections:
                     try:
-                        pdf_data = generate_data_report(df, sections=report_sections)
-                        if pdf_data:
-                            st.download_button(
-                                label="⬇️ Скачать отчет",
-                                data=pdf_data,
-                                file_name=f"data_analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
-                                mime="application/pdf"
-                            )
+                        report_filename = generate_data_report(df, sections=report_sections, fname='data_analysis_report.pdf')
+                        if report_filename:
+                            with open(report_filename, 'rb') as file:
+                                st.download_button(
+                                    label="⬇️ Скачать отчет",
+                                    data=file,
+                                    file_name=report_filename,
+                                    mime="application/pdf"
+                                )
                             st.success("✅ Отчет успешно сгенерирован")
                             save_current_state()
                     except Exception as e:
