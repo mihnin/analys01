@@ -54,3 +54,26 @@ def plot_missing_values(df):
         st.plotly_chart(fig)
     else:
         st.info("В датасете нет пропущенных значений")
+
+def plot_outliers(df, column, lower_bound, upper_bound):
+    """
+    Визуализация выбросов с помощью box plot и гистограммы
+    """
+    st.subheader(f"Визуализация выбросов: {column}")
+    
+    # Box plot с выбросами
+    fig_box = px.box(df, y=column, 
+                     title=f'Box Plot с выбросами: {column}')
+    st.plotly_chart(fig_box)
+    
+    # Гистограмма с отмеченными границами
+    fig_hist = px.histogram(df, x=column,
+                           title=f'Распределение значений с границами выбросов: {column}')
+    
+    # Добавляем вертикальные линии границ
+    fig_hist.add_vline(x=lower_bound, line_dash="dash", line_color="red",
+                      annotation_text="Нижняя граница")
+    fig_hist.add_vline(x=upper_bound, line_dash="dash", line_color="red",
+                      annotation_text="Верхняя граница")
+    
+    st.plotly_chart(fig_hist)
