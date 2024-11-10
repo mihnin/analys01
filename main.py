@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from datetime import datetime
 from utils.data_loader import get_file_uploader
 from utils.data_analyzer import (get_basic_info, analyze_data_types, 
                                 analyze_duplicates, get_numerical_stats,
@@ -12,7 +13,8 @@ from utils.data_processor import (change_column_type, handle_missing_values,
                                 remove_duplicates, export_data)
 from utils.predictor import (prepare_data, train_model, evaluate_model,
                            plot_feature_importance, plot_predictions)
-from utils.database import init_db, save_dataframe, load_dataframe, delete_dataframe
+from utils.database import (init_db, save_dataframe, load_dataframe, delete_dataframe,
+                          get_table_info, get_last_update)
 
 def load_test_data():
     """
@@ -20,11 +22,20 @@ def load_test_data():
     """
     try:
         df = pd.read_csv('test_data.csv')
-        save_dataframe(df)  # Сохраняем в БД
+        if save_dataframe(df, source='test_data'):
+            st.success("✅ Тестовые данные успешно сохранены в базу данных")
         return df
     except Exception as e:
         st.error(f"Ошибка при загрузке тестовых данных: {str(e)}")
         return None
+
+def format_datetime(dt):
+    """
+    Форматирование даты и времени
+    """
+    if dt:
+        return dt.strftime("%d.%m.%Y %H:%M:%S")
+    return "Нет данных"
 
 def check_data_quality(df, target, features):
     """
@@ -77,27 +88,40 @@ def main():
         df = load_dataframe()
         if df is not None:
             st.session_state['df'] = df
+            st.success("✅ Данные успешно загружены из базы данных")
     
     # Кнопка загрузки тестовых данных
     if st.button("📥 Загрузить тестовые данные"):
         test_df = load_test_data()
         if test_df is not None:
             st.session_state['df'] = test_df
-            save_dataframe(test_df)  # Сохраняем в БД
-            st.success("Тестовые данные успешно загружены!")
+            st.success("✅ Тестовые данные успешно загружены!")
             
     # Стандартный загрузчик файлов
     uploaded_df = get_file_uploader()
     if uploaded_df is not None:
         st.session_state['df'] = uploaded_df
-        save_dataframe(uploaded_df)  # Сохраняем в БД
+        if save_dataframe(uploaded_df, source='file_upload'):
+            st.success("✅ Загруженные данные успешно сохранены в базу данных")
     
     # Работа с загруженными данными
     if 'df' in st.session_state:
         df = st.session_state['df']
         
+        # Получаем информацию о таблице
+        table_info = get_table_info()
+        data_source = table_info['source'] if table_info else 'unknown'
+        
         # Создание вкладок
-        tabs = st.tabs(["Обзор", "Анализ", "Визуализация", "Прогнозирование", "Предобработка", "Экспорт"])
+        tabs = st.tabs([
+            f"Обзор [{data_source}]", 
+            f"Анализ [{data_source}]", 
+            f"Визуализация [{data_source}]",
+            f"Прогнозирование [{data_source}]", 
+            f"Предобработка [{data_source}]",
+            f"Экспорт [{data_source}]",
+            "База данных"
+        ])
         
         # Вкладка обзора
         with tabs[0]:
@@ -296,6 +320,36 @@ def main():
                         file_name=filename,
                         mime=mime_type
                     )
+
+        # Вкладка базы данных
+        with tabs[6]:
+            st.subheader("Состояние базы данных")
+            
+            # Информация о подключении
+            st.info("🔌 База данных подключена и готова к работе")
+            
+            # Информация о текущей таблице
+            if table_info:
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    st.metric("Количество строк", table_info['rows'])
+                with col2:
+                    st.metric("Размер БД (МБ)", table_info['size'])
+                with col3:
+                    st.metric("Источник данных", table_info['source'])
+                with col4:
+                    st.metric("Последнее обновление", 
+                             format_datetime(datetime.fromisoformat(table_info['last_update'])))
+            else:
+                st.warning("⚠️ В базе данных нет сохраненных таблиц")
+            
+            # Кнопка очистки БД
+            if st.button("🗑️ Очистить базу данных"):
+                if delete_dataframe():
+                    st.success("✅ База данных успешно очищена")
+                    if 'df' in st.session_state:
+                        del st.session_state['df']
+                    st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
