@@ -24,18 +24,6 @@ from utils.database import (init_db, save_dataframe, load_dataframe, delete_data
 from utils.report_generator import generate_data_report
 from utils.logging_config import setup_logging
 
-# Текущая настройка логирования
-log_handler = logging.handlers.RotatingFileHandler(
-    'app.log',
-    maxBytes=1024*1024,
-    backupCount=5
-)
-logging.basicConfig(
-    handlers=[log_handler],
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levellevel)s - %(message)s'
-)
-
 # Инициализируем логирование
 logger = setup_logging()
 
@@ -63,6 +51,8 @@ def initialize_session_state():
     """Инициализация состояния сессии"""
     if 'active_tab' not in st.session_state:
         st.session_state.active_tab = "Обзор"
+    if 'df' not in st.session_state:
+        st.session_state['df'] = None
 
 def load_test_data():
     """
@@ -125,7 +115,7 @@ def main():
     st.subheader("Загрузка данных")
     
     # Попытка загрузить данные из БД при старте
-    if 'df' not in st.session_state:
+    if st.session_state['df'] is None:
         df = load_dataframe()
         if df is not None:
             st.session_state['df'] = df
@@ -148,7 +138,7 @@ def main():
             save_current_state()
     
     # Работа с загруженными данными
-    if 'df' in st.session_state:
+    if st.session_state['df'] is not None:
         df = st.session_state['df']
         
         # Определение названий вкладок
@@ -345,69 +335,74 @@ def main():
             logger.info("Открыта вкладка генерации отчетов")
             st.header("Отчеты")
             st.subheader("Генерация отчетов")
-            report_sections = st.multiselect(
-                "Выберите разделы для отчета",
-                ["Базовая информация", "Типы данных", "Статистика", 
-                 "Пропущенные значения", "Дубликаты"],
-                default=["Базовая информация", "Типы данных", "Статистика"]
-            )
             
-            if st.button("📄 Сгенерировать отчет"):
-                logger.info("Нажата кнопка генерации отчета")
-                if report_sections:
-                    try:
-                        logger.info(f"Начало генерации отчета. Выбранные секции: {report_sections}")
-                        # Создаем директорию для отчетов если её нет
-                        reports_dir = Path("reports")
-                        reports_dir.mkdir(exist_ok=True)
-                        logger.debug(f"Директория для отчетов: {reports_dir}")
-                        
-                        # Генерация имени файла
-                        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                        report_filename = f'data_analysis_report_{timestamp}.pdf'
-                        logger.debug(f"Сгенерировано имя файла: {report_filename}")
-                        
-                        logging.info(f"Начало генерации отчета: {report_filename}")
-                        
-                        # Предварительная обработка DataFrame
-                        df_processed = df.copy()
-                        for col in df_processed.select_dtypes(include=['object', 'category']).columns:
-                            df_processed[col] = df_processed[col].astype(str)
-                        
-                        # Генерация отчета
-                        result = generate_data_report(
-                            df=df_processed,
-                            sections=report_sections,
-                            fname=report_filename  # Явно передаем имя файла
-                        )
-                        
-                        if result:
-                            report_path = Path(result)
-                            if report_path.is_file():
-                                with open(report_path, 'rb') as file:
-                                    st.download_button(
-                                        label="⬇️ Скачать отчет",
-                                        data=file,
-                                        file_name=report_path.name,
-                                        mime="application/pdf"
-                                    )
-                                st.success(f"✅ Отчет успешно сгенерирован: {report_path.name}")
-                                logger.info(f"Отчет успешно создан: {report_path}")
-                            else:
-                                st.error(f"Файл отчета не найден: {report_path}")
-                        else:
-                            st.error("Не удалось сгенерировать отчет")
-                            logger.error("Не удалось создать отчет")
+            # Проверка наличия данных перед генерацией отчета
+            if st.session_state['df'] is None:
+                st.warning("⚠️ Сначала загрузите данные для генерации отчета")
+                st.info("Используйте кнопку 'Загрузить тестовые данные' или загрузите файл CSV/Excel")
+            else:
+                report_sections = st.multiselect(
+                    "Выберите разделы для отчета",
+                    ["Базовая информация", "Типы данных", "Статистика", 
+                     "Пропущенные значения", "Дубликаты"],
+                    default=["Базовая информация", "Типы данных", "Статистика"]
+                )
+                
+                if st.button("📄 Сгенерировать отчет"):
+                    logger.info("Нажата кнопка генерации отчета")
+                    if report_sections:
+                        try:
+                            logger.info(f"Начало генерации отчета. Выбранные секции: {report_sections}")
+                            # Создаем директорию для отчетов, если её нет
+                            reports_dir = Path("reports")
+                            reports_dir.mkdir(exist_ok=True)
+                            logger.debug(f"Директория для отчетов: {reports_dir}")
                             
-                    except Exception as e:
-                        error_msg = f"Ошибка при генерации отчета: {str(e)}"
-                        logging.error(error_msg, exc_info=True)
-                        st.error(error_msg)
-                        logger.exception(f"Ошибка при генерации отчета: {str(e)}")
-                        raise
-                else:
-                    st.warning("Выберите хотя бы один раздел для отчета")
-                    logger.warning("Не выбраны секции для отчета")
+                            # Генерация имени файла
+                            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                            report_filename = f'data_analysis_report_{timestamp}.xlsx'
+                            logger.debug(f"Сгенерировано имя файла: {report_filename}")
+                            
+                            logging.info(f"Начало генерации отчета: {report_filename}")
+                            
+                            # Предварительная обработка DataFrame
+                            df_processed = df.copy()
+                            for col in df_processed.select_dtypes(include=['object', 'category']).columns:
+                                df_processed[col] = df_processed[col].astype(str)
+                            
+                            # Генерация отчета
+                            result = generate_data_report(
+                                df=df_processed,
+                                sections=report_sections,
+                                fname=report_filename  # Явно передаем имя файла
+                            )
+                            
+                            if result:
+                                report_path = Path(result)
+                                if report_path.is_file():
+                                    with open(report_path, 'rb') as file:
+                                        st.download_button(
+                                            label="⬇️ Скачать отчет",
+                                            data=file,
+                                            file_name=report_path.name,
+                                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                        )
+                                    st.success(f"✅ Отчет успешно сгенерирован: {report_path.name}")
+                                    logger.info(f"Отчет успешно создан: {report_path}")
+                                else:
+                                    st.error(f"Файл отчета не найден: {report_path}")
+                            else:
+                                st.error("Не удалось сгенерировать отчет")
+                                logger.error("Не удалось создать отчет")
+                        except Exception as e:
+                            error_msg = f"Ошибка при генерации отчета: {str(e)}"
+                            logging.error(error_msg, exc_info=True)
+                            st.error(error_msg)
+                            logger.exception(f"Ошибка при генерации отчета: {str(e)}")
+                            raise
+                    else:
+                        st.warning("Выберите хотя бы один раздел для отчета")
+                        logger.warning("Не выбраны секции для отчета")
 
 if __name__ == "__main__":
     main()

@@ -1,28 +1,22 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from fpdf.fpdf import FPDF
-import io
 from datetime import datetime
 import logging
+from pathlib import Path
+import io
 
 logger = logging.getLogger(__name__)
 
 class ReportGenerator:
     def __init__(self, df: pd.DataFrame):
+        """
+        Инициализация генератора отчетов с DataFrame
+        """
         self.df = self._prepare_datatypes(df)
-        self.pdf = FPDF()
-        self.pdf.add_page()
-        
-        # Add Unicode font support
-        self.pdf.add_font('DejaVu', '', '')
-        self.pdf.set_font('DejaVu', '', 12)
-        
-        # Enable auto page break
-        self.pdf.set_auto_page_break(auto=True, margin=15)
 
     def _prepare_datatypes(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Подготовка типов данных для совместимости с Arrow"""
+        """Подготовка типов данных для совместимости"""
         try:
             # Создаем копию датафрейма
             df_processed = df.copy()
@@ -46,154 +40,82 @@ class ReportGenerator:
             st.error(error_msg)
             return df
 
-    def add_title(self, title):
-        """Добавление заголовка в отчет"""
-        try:
-            self.pdf.set_font('DejaVu', '', 16)
-            self.pdf.cell(0, 10, txt=title, ln=True, align='C')
-            self.pdf.set_font('DejaVu', '', 12)
-            self.pdf.ln(5)
-        except Exception as e:
-            st.error(f"Ошибка при добавлении заголовка: {str(e)}")
-
-    def add_section(self, title):
-        """Добавление подзаголовка раздела"""
-        try:
-            self.pdf.set_font('DejaVu', '', 14)
-            self.pdf.cell(0, 10, txt=title, ln=True)
-            self.pdf.set_font('DejaVu', '', 12)
-            self.pdf.ln(2)
-        except Exception as e:
-            st.error(f"Ошибка при добавлении раздела: {str(e)}")
-
-    def add_text(self, text):
-        """Добавление текста в отчет"""
-        try:
-            # Convert to string and handle encoding
-            text = str(text).encode('utf-8', errors='ignore').decode('utf-8')
-            self.pdf.multi_cell(0, 10, txt=text)
-            self.pdf.ln(2)
-        except Exception as e:
-            st.error(f"Ошибка при добавлении текста: {str(e)}")
-
-    def add_basic_info(self):
-        """Добавление базовой информации о датасете"""
-        try:
-            self.add_section("Базовая информация")
-            info_text = (
-                f"Количество строк: {self.df.shape[0]}\n"
-                f"Количество столбцов: {self.df.shape[1]}\n"
-                f"Размер данных (МБ): {round(self.df.memory_usage(deep=True).sum() / 1024 / 1024, 2)}"
-            )
-            self.add_text(info_text)
-        except Exception as e:
-            st.error(f"Ошибка при добавлении базовой информации: {str(e)}")
-
-    def add_data_types(self):
-        """Добавление информации о типах данных"""
-        try:
-            self.add_section("Типы данных")
-            dtypes_info = []
-            for col, dtype in self.df.dtypes.items():
-                nulls = self.df[col].isnull().sum()
-                null_percent = round(nulls / len(self.df) * 100, 2)
-                dtypes_info.append(f"{col}: {dtype} (пропуски: {nulls}, {null_percent}%)")
-            self.add_text("\n".join(dtypes_info))
-        except Exception as e:
-            st.error(f"Ошибка при добавлении информации о типах данных: {str(e)}")
-
-    def add_numerical_stats(self):
-        """Добавление статистики числовых данных"""
-        try:
-            numerical_cols = self.df.select_dtypes(include=[np.number]).columns
-            if len(numerical_cols) > 0:
-                self.add_section("Статистика числовых данных")
-                stats_df = self.df[numerical_cols].describe()
-                stats_text = []
-                for col in numerical_cols:
-                    stats_text.append(f"\nСтатистика для {col}:")
-                    for stat, value in stats_df[col].items():
-                        stats_text.append(f"{stat}: {round(value, 2)}")
-                self.add_text("\n".join(stats_text))
-        except Exception as e:
-            st.error(f"Ошибка при добавлении числовой статистики: {str(e)}")
-
-    def add_missing_values(self):
-        """Добавление информации о пропущенных значениях"""
-        try:
-            missing_data = self.df.isnull().sum()
-            if missing_data.sum() > 0:
-                self.add_section("Пропущенные значения")
-                missing_text = []
-                for col, count in missing_data[missing_data > 0].items():
-                    percent = round(count / len(self.df) * 100, 2)
-                    missing_text.append(f"{col}: {count} ({percent}%)")
-                self.add_text("\n".join(missing_text))
-        except Exception as e:
-            st.error(f"Ошибка при добавлении информации о пропущенных значениях: {str(e)}")
-
-    def add_duplicates_info(self):
-        """Добавление информации о дубликатах"""
-        try:
-            duplicates = self.df.duplicated().sum()
-            self.add_section("Дубликаты")
-            dupl_text = (
-                f"Количество дубликатов: {duplicates}\n"
-                f"Процент дубликатов: {round(duplicates / len(self.df) * 100, 2)}%"
-            )
-            self.add_text(dupl_text)
-        except Exception as e:
-            st.error(f"Ошибка при добавлении информации о дубликатах: {str(e)}")
-
     def generate_report(self, sections=None, fname: str = None):
-        """Генерация полного отчета"""
+        """Генерация полного отчета в Excel"""
         try:
             logger.info(f"Начало генерации отчета. Параметры: fname={fname}, sections={sections}")
             
             if fname is None:
                 raise ValueError("Параметр 'fname' обязателен для создания отчета")
             
-            logger.debug(f"Проверка DataFrame: shape={self.df.shape}, dtypes={self.df.dtypes}")
-            
-            # Проверяем, что данные готовы к обработке
-            if self.df is None:
-                raise ValueError("Датафрейм не был корректно инициализирован")
-                
-            # Добавление заголовка и даты
-            self.add_title("Отчет по анализу данных")
-            self.add_text(f"Дата создания: {datetime.now().strftime('%d.%m.%Y %H:%M:%S')}")
-            
             # Если секции не указаны, генерируем полный отчет
             if sections is None:
                 sections = ["Базовая информация", "Типы данных", "Статистика", 
                            "Пропущенные значения", "Дубликаты"]
             
-            # Добавление выбранных разделов с информированием
-            for section in sections:
-                logger.info(f"Обработка секции: {section}")
-                if section == "Базовая информация":
-                    logger.debug(f"Добавление базовой информации: rows={self.df.shape[0]}, cols={self.df.shape[1]}")
-                    self.add_basic_info()
-                elif section == "Типы данных":
-                    self.add_data_types()
-                elif section == "Статистика":
-                    self.add_numerical_stats()
-                elif section == "Пропущенные значения":
-                    self.add_missing_values()
-                elif section == "Дубликаты":
-                    self.add_duplicates_info()
-
+            # Создание словаря листов для Excel
+            excel_sheets = {}
+            
+            # Базовая информация
+            if "Базовая информация" in sections:
+                basic_info = pd.DataFrame({
+                    'Параметр': ['Количество строк', 'Количество столбцов', 'Размер данных (МБ)'],
+                    'Значение': [
+                        self.df.shape[0], 
+                        self.df.shape[1], 
+                        round(self.df.memory_usage(deep=True).sum() / 1024 / 1024, 2)
+                    ]
+                })
+                excel_sheets['Базовая информация'] = basic_info
+            
+            # Типы данных
+            if "Типы данных" in sections:
+                dtypes_info = pd.DataFrame([
+                    {'Столбец': col, 
+                     'Тип данных': str(dtype), 
+                     'Пропуски': self.df[col].isnull().sum(), 
+                     'Процент пропусков': round(self.df[col].isnull().sum() / len(self.df) * 100, 2)} 
+                    for col, dtype in self.df.dtypes.items()
+                ])
+                excel_sheets['Типы данных'] = dtypes_info
+            
+            # Статистика числовых данных
+            if "Статистика" in sections:
+                numerical_cols = self.df.select_dtypes(include=[np.number]).columns
+                if len(numerical_cols) > 0:
+                    stats_df = self.df[numerical_cols].describe()
+                    excel_sheets['Статистика'] = stats_df
+            
+            # Пропущенные значения
+            if "Пропущенные значения" in sections:
+                missing_data = self.df.isnull().sum()
+                missing_df = pd.DataFrame({
+                    'Столбец': missing_data.index, 
+                    'Количество пропусков': missing_data.values, 
+                    'Процент пропусков': round(missing_data / len(self.df) * 100, 2)
+                })
+                excel_sheets['Пропущенные значения'] = missing_df
+            
+            # Дубликаты
+            if "Дубликаты" in sections:
+                duplicates_df = pd.DataFrame({
+                    'Параметр': ['Количество дубликатов', 'Процент дубликатов'],
+                    'Значение': [
+                        self.df.duplicated().sum(), 
+                        round(self.df.duplicated().sum() / len(self.df) * 100, 2)
+                    ]
+                })
+                excel_sheets['Дубликаты'] = duplicates_df
+            
+            # Сохранение в Excel
             logger.info(f"Сохранение отчета в файл: {fname}")
-            # Сохранение PDF в файл
-            try:
-                self.pdf.output(fname)
-                logging.info(f"Отчет успешно сохранен: {fname}")
-                return fname
-            except Exception as e:
-                error_msg = f"Ошибка при создании PDF: {str(e)}"
-                logging.error(error_msg)
-                st.error(error_msg)
-                return None
+            with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+                for sheet_name, df_sheet in excel_sheets.items():
+                    df_sheet.to_excel(writer, sheet_name=sheet_name, index=False)
+            
+            logging.info(f"Отчет успешно сохранен: {fname}")
+            return fname
+        
         except Exception as e:
             logger.exception(f"Ошибка при генерации отчета: {str(e)}")
             error_msg = f"Ошибка при генерации отчета: {str(e)}"
@@ -209,7 +131,7 @@ def generate_data_report(df: pd.DataFrame, sections=None, fname: str = None) -> 
         # Обязательно проверяем и создаём имя файла
         if not fname:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            fname = f'data_analysis_report_{timestamp}.pdf'
+            fname = f'data_analysis_report_{timestamp}.xlsx'
         
         # Абсолютный путь для отчета
         reports_dir = Path.cwd() / 'reports'

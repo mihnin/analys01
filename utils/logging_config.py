@@ -14,7 +14,7 @@ def setup_logging():
             
         # Исправляем форматтер для корректной работы с UTF-8
         detailed_formatter = logging.Formatter(
-            fmt='%(asctime)s.%(msecs)03d - %(levelоvel)s - %(name)s - %(filename)s:%(lineno)d - %(funcName)s - %(message)s',
+            fmt='%(asctime)s.%(msecs)03d - %(levelname)s - %(name)s - %(filename)s:%(lineno)d - %(funcName)s - %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S'
         )
 
@@ -31,12 +31,18 @@ def setup_logging():
         time_handler.setFormatter(detailed_formatter)
         time_handler.setLevel(logging.DEBUG)
         
+        # Консольный handler для отладки
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_handler.setFormatter(detailed_formatter)
+        console_handler.setLevel(logging.INFO)
+        
         # Очистка всех существующих handlers
         root_logger = logging.getLogger()
         root_logger.handlers.clear()
         
-        # Установка нового handler
+        # Установка новых handlers
         root_logger.addHandler(time_handler)
+        root_logger.addHandler(console_handler)
         root_logger.setLevel(logging.DEBUG)
         
         # Проверка работы логирования
