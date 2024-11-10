@@ -4,16 +4,16 @@ import numpy as np
 from datetime import datetime
 from utils.data_loader import get_file_uploader
 from utils.data_analyzer import (get_basic_info, analyze_data_types, 
-                                analyze_duplicates, get_numerical_stats,
-                                analyze_outliers)
+                               analyze_duplicates, get_numerical_stats,
+                               analyze_outliers)
 from utils.data_visualizer import (create_histogram, create_box_plot, 
-                                create_scatter_plot, plot_correlation_matrix,
-                                plot_missing_values, plot_outliers)
+                               create_scatter_plot, plot_correlation_matrix,
+                               plot_missing_values, plot_outliers)
 from utils.data_processor import (change_column_type, handle_missing_values,
-                                remove_duplicates, export_data)
+                               remove_duplicates, export_data)
 from utils.database import (init_db, save_dataframe, load_dataframe, delete_dataframe,
-                           get_table_info, get_last_update, save_analysis_state,
-                           load_analysis_state)
+                          get_table_info, get_last_update, save_analysis_state,
+                          load_analysis_state)
 from utils.report_generator import generate_data_report
 
 def initialize_session_state():
@@ -26,8 +26,6 @@ def initialize_session_state():
         st.session_state.state_loaded = False
     if 'last_save_time' not in st.session_state:
         st.session_state.last_save_time = datetime.now()
-    if 'selected_tab' not in st.session_state:
-        st.session_state.selected_tab = "Обзор"
 
 def load_test_data():
     """
@@ -66,7 +64,6 @@ def save_current_state():
     Сохранение текущего состояния анализа
     """
     try:
-        # Проверяем, прошло ли достаточно времени с последнего сохранения
         current_time = datetime.now()
         if 'last_save_time' in st.session_state:
             time_diff = (current_time - st.session_state.last_save_time).total_seconds()
@@ -215,19 +212,17 @@ def main():
         
         # Создание навигации в сайдбаре
         with st.sidebar:
-            st.session_state.selected_tab = st.radio(
+            selected_tab = st.radio(
                 "Навигация",
                 tab_names,
-                index=st.session_state.active_tab,
-                key='nav_radio'
+                index=st.session_state.active_tab
             )
+            current_tab_index = tab_names.index(selected_tab)
             
-            # Обновление активной вкладки только при изменении
-            if st.session_state.selected_tab is not None:
-                new_tab_index = tab_names.index(st.session_state.selected_tab)
-                if new_tab_index != st.session_state.active_tab:
-                    st.session_state.active_tab = new_tab_index
-                    save_current_state()
+            # Update active tab if changed
+            if current_tab_index != st.session_state.active_tab:
+                st.session_state.active_tab = current_tab_index
+                save_current_state()
         
         # Создание вкладок
         tabs = st.tabs(tab_names)
@@ -367,7 +362,7 @@ def main():
                     if success:
                         st.session_state['df'] = df
                         save_dataframe(df)
-                        st.success("✅ Пропуски успешно обработаны")
+                        st.success("✅ Пропущенные значения обработаны")
                         save_current_state()
                         
             else:  # Удаление дубликатов
@@ -376,7 +371,7 @@ def main():
                     if success:
                         st.session_state['df'] = df
                         save_dataframe(df)
-                        st.success("✅ Дубликаты успешно удалены")
+                        st.success("✅ Дубликаты удалены")
                         save_current_state()
         
         # Вкладка экспорта
@@ -389,21 +384,18 @@ def main():
             )
             
             if st.button("Экспортировать"):
-                try:
-                    result = export_data(df, format_type)
-                    if result and len(result) == 3:
-                        file_content, mime_type, _ = result
-                        file_ext = 'csv' if format_type == 'csv' else 'xlsx'
-                        if file_content:
-                            st.download_button(
-                                label="⬇️ Скачать файл",
-                                data=file_content,
-                                file_name=f"data_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{file_ext}",
-                                mime=mime_type
-                            )
-                except Exception as e:
-                    st.error(f"Ошибка при экспорте данных: {str(e)}")
-
+                result = export_data(df, format_type)
+                if result and len(result) == 3:
+                    data, mime_type, _ = result
+                    file_ext = format_type
+                    if data:
+                        st.download_button(
+                            label="⬇️ Скачать файл",
+                            data=data,
+                            file_name=f"data_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{file_ext}",
+                            mime=mime_type
+                        )
+        
         # Вкладка базы данных
         with tabs[5]:
             st.subheader("Управление базой данных")
