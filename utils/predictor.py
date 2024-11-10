@@ -6,13 +6,24 @@ from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, classification_report
 import streamlit as st
 
-def prepare_data(df, target_column, feature_columns):
+def prepare_data(df, target_column, feature_columns, task_type='regression'):
     """
     Подготовка данных для обучения модели
     """
+    # Проверка типа целевой переменной
+    is_target_numeric = np.issubdtype(df[target_column].dtype, np.number)
+    if task_type == 'regression' and not is_target_numeric:
+        st.error(f"❌ Ошибка: Для задачи регрессии целевая переменная '{target_column}' должна быть числовой. "
+                f"Текущий тип: {df[target_column].dtype}")
+        st.stop()
+    elif task_type == 'classification' and is_target_numeric:
+        st.error(f"❌ Ошибка: Для задачи классификации целевая переменная '{target_column}' должна быть категориальной. "
+                f"Текущий тип: {df[target_column].dtype}")
+        st.stop()
+    
     # Проверка на пропуски в целевой переменной
     if df[target_column].isnull().any():
-        st.warning(f"Обнаружены пропущенные значения в целевой переменной '{target_column}'. "
+        st.warning(f"⚠️ Обнаружены пропущенные значения в целевой переменной '{target_column}'. "
                   "Строки с пропусками будут удалены.")
         df = df.dropna(subset=[target_column])
     
@@ -21,22 +32,22 @@ def prepare_data(df, target_column, feature_columns):
     features_with_nulls = missing_features[missing_features > 0]
     
     if not features_with_nulls.empty:
-        st.warning("Обнаружены пропущенные значения в следующих признаках:")
+        st.warning("⚠️ Обнаружены пропущенные значения в следующих признаках:")
         for feature, null_count in features_with_nulls.items():
             st.write(f"- {feature}: {null_count} пропусков "
                     f"({round(null_count/len(df)*100, 2)}%)")
         
         # Удаляем строки с пропусками в признаках
         df = df.dropna(subset=feature_columns)
-        st.info(f"Удалено {len(df) - len(df.dropna(subset=feature_columns))} строк с пропущенными значениями.")
-    
-    X = df[feature_columns]
-    y = df[target_column]
+        st.info(f"ℹ️ Удалено {len(df) - len(df.dropna(subset=feature_columns))} строк с пропущенными значениями.")
     
     # Проверка на достаточное количество данных
     if len(df) < 10:
-        st.error("Недостаточно данных для обучения модели после удаления пропущенных значений.")
+        st.error("❌ Недостаточно данных для обучения модели после удаления пропущенных значений.")
         st.stop()
+    
+    X = df[feature_columns]
+    y = df[target_column]
     
     # Обработка категориальных признаков
     X = pd.get_dummies(X, drop_first=True)
@@ -57,7 +68,7 @@ def train_model(X_train, y_train, task_type='regression'):
     """
     # Проверка на пропущенные значения в данных
     if np.isnan(X_train).any() or np.isnan(y_train).any():
-        st.error("Обнаружены пропущенные значения в данных. Пожалуйста, обработайте их перед обучением модели.")
+        st.error("❌ Обнаружены пропущенные значения в данных. Пожалуйста, обработайте их перед обучением модели.")
         st.stop()
     
     if task_type == 'regression':
@@ -69,7 +80,7 @@ def train_model(X_train, y_train, task_type='regression'):
         model.fit(X_train, y_train)
         return model
     except Exception as e:
-        st.error(f"Ошибка при обучении модели: {str(e)}")
+        st.error(f"❌ Ошибка при обучении модели: {str(e)}")
         st.stop()
 
 def evaluate_model(model, X_test, y_test, task_type='regression'):

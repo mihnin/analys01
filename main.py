@@ -193,11 +193,17 @@ def main():
             )
             task_type = task_type.lower()
             
-            # Выбор целевой переменной
+            # Выбор целевой переменной и признаков
             if task_type == "регрессия":
                 target_columns = df.select_dtypes(include=[np.number]).columns
+                if len(target_columns) == 0:
+                    st.error("❌ В датасете нет числовых столбцов для задачи регрессии")
+                    st.stop()
             else:
                 target_columns = df.select_dtypes(include=['object', 'category']).columns
+                if len(target_columns) == 0:
+                    st.error("❌ В датасете нет категориальных столбцов для задачи классификации")
+                    st.stop()
                 
             target = st.selectbox(
                 "Выберите целевую переменную",
@@ -212,41 +218,46 @@ def main():
                 key="features"
             )
             
-            if st.button("Обучить модель") and len(feature_columns) > 0:
-                # Проверка качества данных
-                if check_data_quality(df, target, feature_columns):
-                    with st.spinner("Обучение модели..."):
-                        try:
-                            # Подготовка данных
-                            X_train, X_test, y_train, y_test, scaler = prepare_data(
-                                df, target, feature_columns
-                            )
-                            
-                            # Обучение модели
-                            model = train_model(X_train, y_train, task_type)
-                            
-                            # Получение прогнозов
-                            predictions = model.predict(X_test)
-                            
-                            # Оценка качества
-                            metrics = evaluate_model(model, X_test, y_test, task_type)
-                            
-                            # Вывод метрик
-                            st.subheader("Метрики качества модели:")
-                            for metric, value in metrics.items():
-                                if metric != 'Report':
-                                    st.metric(metric, value)
-                            
-                            # Визуализация результатов
-                            st.subheader("Важность признаков:")
-                            plot_feature_importance(model, 
-                                                pd.get_dummies(df[feature_columns], 
-                                                            drop_first=True).columns)
-                            
-                            st.subheader("Сравнение прогнозов с фактическими значениями:")
-                            plot_predictions(y_test, predictions, task_type)
-                        except Exception as e:
-                            st.error(f"Ошибка при обучении модели: {str(e)}")
+            if st.button("Обучить модель"):
+                if len(feature_columns) == 0:
+                    st.error("❌ Необходимо выбрать хотя бы один признак для обучения модели")
+                else:
+                    # Проверка качества данных
+                    if check_data_quality(df, target, feature_columns):
+                        with st.spinner("⏳ Обучение модели..."):
+                            try:
+                                # Подготовка данных
+                                X_train, X_test, y_train, y_test, scaler = prepare_data(
+                                    df, target, feature_columns, task_type
+                                )
+                                
+                                # Обучение модели
+                                model = train_model(X_train, y_train, task_type)
+                                
+                                # Получение прогнозов
+                                predictions = model.predict(X_test)
+                                
+                                # Оценка качества
+                                metrics = evaluate_model(model, X_test, y_test, task_type)
+                                
+                                # Вывод метрик
+                                st.subheader("📊 Метрики качества модели:")
+                                for metric, value in metrics.items():
+                                    if metric != 'Report':
+                                        st.metric(metric, value)
+                                
+                                # Визуализация результатов
+                                st.subheader("📈 Важность признаков:")
+                                plot_feature_importance(model, 
+                                                    pd.get_dummies(df[feature_columns], 
+                                                                drop_first=True).columns)
+                                
+                                st.subheader("🎯 Сравнение прогнозов с фактическими значениями:")
+                                plot_predictions(y_test, predictions, task_type)
+                                
+                                st.success("✅ Модель успешно обучена!")
+                            except Exception as e:
+                                st.error(f"❌ Ошибка при обучении модели: {str(e)}")
         
         # Вкладка предобработки
         with tabs[4]:
@@ -273,7 +284,7 @@ def main():
                     if success:
                         st.session_state['df'] = df
                         save_dataframe(df)  # Сохраняем изменения в БД
-                        st.success("Тип данных успешно изменен")
+                        st.success("✅ Тип данных успешно изменен")
                         
             elif process_type == "Обработка пропусков":
                 col1, col2 = st.columns(2)
@@ -294,7 +305,7 @@ def main():
                     if success:
                         st.session_state['df'] = df
                         save_dataframe(df)  # Сохраняем изменения в БД
-                        st.success("Пропуски успешно обработаны")
+                        st.success("✅ Пропуски успешно обработаны")
                         
             else:
                 if st.button("Удалить дубликаты"):
@@ -302,7 +313,7 @@ def main():
                     if success:
                         st.session_state['df'] = df
                         save_dataframe(df)  # Сохраняем изменения в БД
-                        st.success("Дубликаты успешно удалены")
+                        st.success("✅ Дубликаты успешно удалены")
         
         # Вкладка экспорта
         with tabs[5]:
