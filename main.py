@@ -4,16 +4,16 @@ import numpy as np
 from datetime import datetime
 from utils.data_loader import get_file_uploader
 from utils.data_analyzer import (get_basic_info, analyze_data_types, 
-                                analyze_duplicates, get_numerical_stats,
-                                analyze_outliers)
+                               analyze_duplicates, get_numerical_stats,
+                               analyze_outliers)
 from utils.data_visualizer import (create_histogram, create_box_plot, 
-                                create_scatter_plot, plot_correlation_matrix,
-                                plot_missing_values, plot_outliers)
+                               create_scatter_plot, plot_correlation_matrix,
+                               plot_missing_values, plot_outliers)
 from utils.data_processor import (change_column_type, handle_missing_values,
-                                remove_duplicates, export_data)
+                               remove_duplicates, export_data)
 from utils.database import (init_db, save_dataframe, load_dataframe, delete_dataframe,
-                           get_table_info, get_last_update, save_analysis_state,
-                           load_analysis_state)
+                          get_table_info, get_last_update, save_analysis_state,
+                          load_analysis_state)
 from utils.report_generator import generate_data_report
 
 def load_test_data():
@@ -157,20 +157,22 @@ def main():
             "Отчеты"
         ]
         
-        # Используем сохраненный индекс активной вкладки
-        active_tab = st.session_state.get('active_tab', 0)
         tabs = st.tabs(tab_names)
+        
+        # Update active tab in session state when tab changes
+        active_tab = st.session_state.get('active_tab', 0)
+        st.session_state['active_tab'] = active_tab
         
         # Вкладка обзора
         with tabs[0]:
-            if active_tab == 0:
+            if st.session_state.get('active_tab') == 0:
                 get_basic_info(df)
                 st.dataframe(df.head())
                 analyze_data_types(df)
         
         # Вкладка анализа
         with tabs[1]:
-            if active_tab == 1:
+            if st.session_state.get('active_tab') == 1:
                 analyze_duplicates(df)
                 get_numerical_stats(df)
                 plot_missing_values(df)
@@ -191,7 +193,7 @@ def main():
         
         # Вкладка визуализации
         with tabs[2]:
-            if active_tab == 2:
+            if st.session_state.get('active_tab') == 2:
                 st.subheader("Визуализация данных")
                 
                 viz_type = st.selectbox("Выберите тип визуализации", 
@@ -224,7 +226,7 @@ def main():
         
         # Вкладка предобработки
         with tabs[3]:
-            if active_tab == 3:
+            if st.session_state.get('active_tab') == 3:
                 st.subheader("Предобработка данных")
                 
                 process_type = st.selectbox("Выберите тип обработки", 
@@ -281,7 +283,7 @@ def main():
         
         # Вкладка экспорта
         with tabs[4]:
-            if active_tab == 4:
+            if st.session_state.get('active_tab') == 4:
                 st.subheader("Экспорт данных")
                 
                 format_type = st.selectbox("Выберите формат", ['csv', 'excel'],
@@ -299,7 +301,7 @@ def main():
         
         # Вкладка базы данных
         with tabs[5]:
-            if active_tab == 5:
+            if st.session_state.get('active_tab') == 5:
                 st.subheader("Информация о базе данных")
                 
                 if table_info:
@@ -312,13 +314,13 @@ def main():
                         if delete_dataframe():
                             st.session_state.pop('df', None)
                             st.success("✅ База данных успешно очищена")
-                            st.experimental_rerun()
+                            st.rerun()
                 else:
                     st.info("База данных пуста")
         
         # Вкладка отчетов
         with tabs[6]:
-            if active_tab == 6:
+            if st.session_state.get('active_tab') == 6:
                 st.subheader("Генерация отчетов")
                 
                 report_options = st.multiselect(
@@ -341,13 +343,9 @@ def main():
                         st.success("✅ Отчет успешно сгенерирован!")
                     except Exception as e:
                         st.error(f"Ошибка при генерации отчета: {str(e)}")
-        
-        # Обновление активной вкладки и сохранение состояния
-        for i, tab in enumerate(tabs):
-            if tab._is_active():
-                st.session_state['active_tab'] = i
-                save_current_state()
-                break
+
+        # Save current state when any change occurs
+        save_current_state()
 
 if __name__ == "__main__":
     main()
