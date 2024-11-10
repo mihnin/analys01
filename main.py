@@ -23,6 +23,35 @@ def load_test_data():
         st.error(f"Ошибка при загрузке тестовых данных: {str(e)}")
         return None
 
+def check_data_quality(df, target, features):
+    """
+    Проверка качества данных перед обучением модели
+    """
+    # Проверка на пропущенные значения
+    missing_target = df[target].isnull().sum()
+    missing_features = df[features].isnull().sum()
+    
+    has_issues = False
+    
+    if missing_target > 0:
+        st.warning(f"⚠️ В целевой переменной '{target}' обнаружено {missing_target} "
+                  f"пропущенных значений ({round(missing_target/len(df)*100, 2)}%)")
+        has_issues = True
+    
+    features_with_nulls = missing_features[missing_features > 0]
+    if not features_with_nulls.empty:
+        st.warning("⚠️ Обнаружены пропущенные значения в признаках:")
+        for feature, null_count in features_with_nulls.items():
+            st.write(f"- {feature}: {null_count} пропусков "
+                    f"({round(null_count/len(df)*100, 2)}%)")
+        has_issues = True
+    
+    if has_issues:
+        st.info("ℹ️ Рекомендуется обработать пропущенные значения перед обучением модели. "
+                "Используйте вкладку 'Предобработка' для работы с пропущенными значениями.")
+    
+    return not has_issues
+
 def main():
     st.set_page_config(
         page_title="Анализ данных",
@@ -144,35 +173,40 @@ def main():
             )
             
             if st.button("Обучить модель") and len(feature_columns) > 0:
-                with st.spinner("Обучение модели..."):
-                    # Подготовка данных
-                    X_train, X_test, y_train, y_test, scaler = prepare_data(
-                        df, target, feature_columns
-                    )
-                    
-                    # Обучение модели
-                    model = train_model(X_train, y_train, task_type)
-                    
-                    # Получение прогнозов
-                    predictions = model.predict(X_test)
-                    
-                    # Оценка качества
-                    metrics = evaluate_model(model, X_test, y_test, task_type)
-                    
-                    # Вывод метрик
-                    st.subheader("Метрики качества модели:")
-                    for metric, value in metrics.items():
-                        if metric != 'Report':
-                            st.metric(metric, value)
-                    
-                    # Визуализация результатов
-                    st.subheader("Важность признаков:")
-                    plot_feature_importance(model, 
-                                         pd.get_dummies(df[feature_columns], 
-                                                      drop_first=True).columns)
-                    
-                    st.subheader("Сравнение прогнозов с фактическими значениями:")
-                    plot_predictions(y_test, predictions, task_type)
+                # Проверка качества данных
+                if check_data_quality(df, target, feature_columns):
+                    with st.spinner("Обучение модели..."):
+                        try:
+                            # Подготовка данных
+                            X_train, X_test, y_train, y_test, scaler = prepare_data(
+                                df, target, feature_columns
+                            )
+                            
+                            # Обучение модели
+                            model = train_model(X_train, y_train, task_type)
+                            
+                            # Получение прогнозов
+                            predictions = model.predict(X_test)
+                            
+                            # Оценка качества
+                            metrics = evaluate_model(model, X_test, y_test, task_type)
+                            
+                            # Вывод метрик
+                            st.subheader("Метрики качества модели:")
+                            for metric, value in metrics.items():
+                                if metric != 'Report':
+                                    st.metric(metric, value)
+                            
+                            # Визуализация результатов
+                            st.subheader("Важность признаков:")
+                            plot_feature_importance(model, 
+                                                pd.get_dummies(df[feature_columns], 
+                                                            drop_first=True).columns)
+                            
+                            st.subheader("Сравнение прогнозов с фактическими значениями:")
+                            plot_predictions(y_test, predictions, task_type)
+                        except Exception as e:
+                            st.error(f"Ошибка при обучении модели: {str(e)}")
         
         # Вкладка предобработки
         with tabs[4]:
@@ -188,11 +222,11 @@ def main():
                 col1, col2 = st.columns(2)
                 with col1:
                     column = st.selectbox("Выберите столбец", df.columns,
-                                        key="change_type_column")
+                                       key="change_type_column")
                 with col2:
                     new_type = st.selectbox("Выберите новый тип", 
-                                         ['int64', 'float64', 'str', 'category'],
-                                         key="new_type")
+                                        ['int64', 'float64', 'str', 'category'],
+                                        key="new_type")
                 
                 if st.button("Применить"):
                     df, success = change_column_type(df, column, new_type)
@@ -204,11 +238,11 @@ def main():
                 col1, col2 = st.columns(2)
                 with col1:
                     column = st.selectbox("Выберите столбец", df.columns,
-                                        key="missing_column")
+                                       key="missing_column")
                 with col2:
                     method = st.selectbox("Выберите метод", 
-                                       ['drop', 'fill_value', 'fill_mean', 'fill_median'],
-                                       key="missing_method")
+                                      ['drop', 'fill_value', 'fill_mean', 'fill_median'],
+                                      key="missing_method")
                 
                 value = None
                 if method == 'fill_value':
@@ -232,7 +266,7 @@ def main():
             st.subheader("Экспорт данных")
             
             format_type = st.selectbox("Выберите формат", ['csv', 'excel'],
-                                     key="export_format")
+                                    key="export_format")
             
             if st.button("Экспортировать"):
                 data, mime_type, filename = export_data(df, format_type)

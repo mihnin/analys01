@@ -10,8 +10,33 @@ def prepare_data(df, target_column, feature_columns):
     """
     Подготовка данных для обучения модели
     """
+    # Проверка на пропуски в целевой переменной
+    if df[target_column].isnull().any():
+        st.warning(f"Обнаружены пропущенные значения в целевой переменной '{target_column}'. "
+                  "Строки с пропусками будут удалены.")
+        df = df.dropna(subset=[target_column])
+    
+    # Проверка на пропуски в признаках
+    missing_features = df[feature_columns].isnull().sum()
+    features_with_nulls = missing_features[missing_features > 0]
+    
+    if not features_with_nulls.empty:
+        st.warning("Обнаружены пропущенные значения в следующих признаках:")
+        for feature, null_count in features_with_nulls.items():
+            st.write(f"- {feature}: {null_count} пропусков "
+                    f"({round(null_count/len(df)*100, 2)}%)")
+        
+        # Удаляем строки с пропусками в признаках
+        df = df.dropna(subset=feature_columns)
+        st.info(f"Удалено {len(df) - len(df.dropna(subset=feature_columns))} строк с пропущенными значениями.")
+    
     X = df[feature_columns]
     y = df[target_column]
+    
+    # Проверка на достаточное количество данных
+    if len(df) < 10:
+        st.error("Недостаточно данных для обучения модели после удаления пропущенных значений.")
+        st.stop()
     
     # Обработка категориальных признаков
     X = pd.get_dummies(X, drop_first=True)
@@ -30,13 +55,22 @@ def train_model(X_train, y_train, task_type='regression'):
     """
     Обучение модели в зависимости от типа задачи
     """
+    # Проверка на пропущенные значения в данных
+    if np.isnan(X_train).any() or np.isnan(y_train).any():
+        st.error("Обнаружены пропущенные значения в данных. Пожалуйста, обработайте их перед обучением модели.")
+        st.stop()
+    
     if task_type == 'regression':
         model = RandomForestRegressor(n_estimators=100, random_state=42)
     else:
         model = RandomForestClassifier(n_estimators=100, random_state=42)
     
-    model.fit(X_train, y_train)
-    return model
+    try:
+        model.fit(X_train, y_train)
+        return model
+    except Exception as e:
+        st.error(f"Ошибка при обучении модели: {str(e)}")
+        st.stop()
 
 def evaluate_model(model, X_test, y_test, task_type='regression'):
     """

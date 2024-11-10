@@ -1,0 +1,35 @@
+ValueError: Input y contains NaN.
+Traceback:
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/exec_code.py", line 88, in exec_func_with_error_handling
+    result = func()
+             ^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 579, in code_to_exec
+    exec(code, module.__dict__)
+File "/home/runner/workspace/main.py", line 248, in <module>
+    main()
+File "/home/runner/workspace/main.py", line 154, in main
+    model = train_model(X_train, y_train, task_type)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/utils/predictor.py", line 38, in train_model
+    model.fit(X_train, y_train)
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/base.py", line 1473, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/ensemble/_forest.py", line 363, in fit
+    X, y = self._validate_data(
+           ^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/base.py", line 650, in _validate_data
+    X, y = check_X_y(X, y, **check_params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/utils/validation.py", line 1318, in check_X_y
+    y = _check_y(y, multi_output=multi_output, y_numeric=y_numeric, estimator=estimator)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/utils/validation.py", line 1328, in _check_y
+    y = check_array(
+        ^^^^^^^^^^^^
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/utils/validation.py", line 1064, in check_array
+    _assert_all_finite(
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/utils/validation.py", line 123, in _assert_all_finite
+    _assert_all_finite_element_wise(
+File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/sklearn/utils/validation.py", line 172, in _assert_all_finite_element_wise
+    raise ValueError(msg_err)
