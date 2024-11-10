@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from fpdf import FPDF
+from fpdf import FPDF2 as FPDF
 import io
 from datetime import datetime
 
@@ -11,32 +11,19 @@ class ReportGenerator:
         self.pdf = FPDF()
         self.pdf.add_page()
         
-        # Configure font with Unicode support
-        try:
-            self.pdf.set_font('Arial Unicode MS', '', 12)
-        except Exception as e:
-            try:
-                # First fallback - try DejaVu Sans
-                self.pdf.add_font('DejaVu', '', '', uni=True)
-                self.pdf.set_font('DejaVu', '', 12)
-            except Exception as e:
-                try:
-                    # Second fallback - built-in Arial with Unicode
-                    self.pdf.set_font('Arial', '', 12)
-                except Exception as e:
-                    st.error(f"Ошибка при установке шрифта: {str(e)}")
-                    return None
+        # Add built-in Unicode font
+        self.pdf.add_font('DejaVu', '', '', uni=True)
+        self.pdf.set_font('DejaVu', size=12)
         
-        # Enable unicode support and auto page break
+        # Enable auto page break
         self.pdf.set_auto_page_break(auto=True, margin=15)
 
     def add_title(self, title):
         """Добавление заголовка в отчет"""
         try:
-            current_font = self.pdf.get_font_family()
-            self.pdf.set_font(current_font, '', 16)
+            self.pdf.set_font('DejaVu', size=16)
             self.pdf.cell(0, 10, txt=title, ln=True, align='C')
-            self.pdf.set_font(current_font, '', 12)
+            self.pdf.set_font('DejaVu', size=12)
             self.pdf.ln(5)
         except Exception as e:
             st.error(f"Ошибка при добавлении заголовка: {str(e)}")
@@ -44,10 +31,9 @@ class ReportGenerator:
     def add_section(self, title):
         """Добавление подзаголовка раздела"""
         try:
-            current_font = self.pdf.get_font_family()
-            self.pdf.set_font(current_font, '', 14)
+            self.pdf.set_font('DejaVu', size=14)
             self.pdf.cell(0, 10, txt=title, ln=True)
-            self.pdf.set_font(current_font, '', 12)
+            self.pdf.set_font('DejaVu', size=12)
             self.pdf.ln(2)
         except Exception as e:
             st.error(f"Ошибка при добавлении раздела: {str(e)}")
@@ -55,8 +41,8 @@ class ReportGenerator:
     def add_text(self, text):
         """Добавление текста в отчет"""
         try:
-            # Ensure text is properly encoded for PDF
-            text = text.encode('utf-8', errors='ignore').decode('utf-8')
+            # Convert to string and handle encoding
+            text = str(text).encode('utf-8', errors='ignore').decode('utf-8')
             self.pdf.multi_cell(0, 10, txt=text)
             self.pdf.ln(2)
         except Exception as e:
@@ -161,9 +147,8 @@ class ReportGenerator:
                 self.pdf.output(pdf_buffer)
                 return pdf_buffer.getvalue()
             except Exception as e:
-                st.error("Ошибка при создании PDF: проблема с кодировкой символов")
+                st.error(f"Ошибка при создании PDF: {str(e)}")
                 return None
-                
         except Exception as e:
             st.error(f"Ошибка при генерации отчета: {str(e)}")
             return None
