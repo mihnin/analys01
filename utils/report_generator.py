@@ -1,9 +1,8 @@
+import streamlit as st
 import pandas as pd
 import numpy as np
 from fpdf import FPDF
 import io
-import base64
-import plotly.io as pio
 from datetime import datetime
 
 class ReportGenerator:
@@ -11,13 +10,22 @@ class ReportGenerator:
         self.df = df
         self.pdf = FPDF()
         self.pdf.add_page()
+        
+        # Configure font with Unicode support
         try:
-            # Use built-in font with unicode support
-            self.pdf.add_font('Helvetica', '', unifontpath=None, uni=True)
-            self.pdf.set_font('Helvetica', '', 12)
+            self.pdf.set_font('Arial Unicode MS', '', 12)
         except Exception as e:
-            # Fallback to built-in font if Helvetica is not available
-            self.pdf.set_font('Arial', '', 12)
+            try:
+                # First fallback - try DejaVu Sans
+                self.pdf.add_font('DejaVu', '', '', uni=True)
+                self.pdf.set_font('DejaVu', '', 12)
+            except Exception as e:
+                try:
+                    # Second fallback - built-in Arial with Unicode
+                    self.pdf.set_font('Arial', '', 12)
+                except Exception as e:
+                    st.error(f"Ошибка при установке шрифта: {str(e)}")
+                    return None
         
         # Enable unicode support and auto page break
         self.pdf.set_auto_page_break(auto=True, margin=15)
@@ -47,6 +55,8 @@ class ReportGenerator:
     def add_text(self, text):
         """Добавление текста в отчет"""
         try:
+            # Ensure text is properly encoded for PDF
+            text = text.encode('utf-8', errors='ignore').decode('utf-8')
             self.pdf.multi_cell(0, 10, txt=text)
             self.pdf.ln(2)
         except Exception as e:
@@ -145,12 +155,15 @@ class ReportGenerator:
             if "Дубликаты" in sections:
                 self.add_duplicates_info()
 
-            # Возвращаем PDF в виде байтов
+            # Используем BytesIO для генерации PDF
             try:
-                return self.pdf.output(dest='S').encode('latin1')
-            except UnicodeEncodeError as e:
+                pdf_buffer = io.BytesIO()
+                self.pdf.output(pdf_buffer)
+                return pdf_buffer.getvalue()
+            except Exception as e:
                 st.error("Ошибка при создании PDF: проблема с кодировкой символов")
                 return None
+                
         except Exception as e:
             st.error(f"Ошибка при генерации отчета: {str(e)}")
             return None
