@@ -178,8 +178,10 @@ def main():
                     numerical_cols,
                     key="outliers_column"
                 )
-                lower_bound, upper_bound = analyze_outliers(df, selected_column)
-                plot_outliers(df, selected_column, lower_bound, upper_bound)
+                if selected_column:
+                    lower_bound, upper_bound = analyze_outliers(df, selected_column)
+                    if lower_bound is not None and upper_bound is not None:
+                        plot_outliers(df, selected_column, lower_bound, upper_bound)
             else:
                 st.info("В датасете нет числовых столбцов для анализа выбросов")
         
@@ -287,9 +289,9 @@ def main():
                 data, mime_type, file_name = export_data(df, format_type)
                 if data:
                     st.download_button(
-                        label="Скачать файл",
+                        label="📥 Скачать файл",
                         data=data,
-                        file_name=file_name,
+                        file_name=f"data_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{format_type}",
                         mime=mime_type
                     )
                     save_current_state()
@@ -328,9 +330,9 @@ def main():
                 try:
                     report_bytes = generate_data_report(df, sections=report_options)
                     st.download_button(
-                        label="Скачать отчет",
+                        label="📥 Скачать отчет",
                         data=report_bytes,
-                        file_name="report.pdf",
+                        file_name=f"data_analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
                         mime="application/pdf"
                     )
                     st.success("✅ Отчет успешно сгенерирован!")

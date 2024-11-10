@@ -209,6 +209,10 @@ def analyze_outliers(df, column):
     """
     Анализ выбросов в данных с использованием метода IQR
     """
+    if column is None:
+        st.warning("Выберите столбец для анализа выбросов")
+        return None, None
+        
     Q1 = df[column].quantile(0.25)
     Q3 = df[column].quantile(0.75)
     IQR = Q3 - Q1
