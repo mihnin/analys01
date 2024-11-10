@@ -31,6 +31,10 @@ def create_histogram(df, column):
     """
     Создание улучшенной гистограммы с анализом распределения
     """
+    if column is None:
+        st.warning("Выберите столбец для построения гистограммы")
+        return
+        
     st.subheader(f"Анализ распределения: {column}")
     
     # Анализ распределения
@@ -77,6 +81,10 @@ def create_box_plot(df, column):
     """
     Создание улучшенного box plot с описанием статистик
     """
+    if column is None:
+        st.warning("Выберите столбец для построения box plot")
+        return
+        
     st.subheader(f"Box Plot анализ: {column}")
     
     # Расчет статистик

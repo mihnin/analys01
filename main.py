@@ -182,6 +182,7 @@ def main():
                     lower_bound, upper_bound = analyze_outliers(df, selected_column)
                     if lower_bound is not None and upper_bound is not None:
                         plot_outliers(df, selected_column, lower_bound, upper_bound)
+                        save_current_state()
             else:
                 st.info("В датасете нет числовых столбцов для анализа выбросов")
         
@@ -189,55 +190,79 @@ def main():
         with tabs[2]:
             st.subheader("Визуализация данных")
             
-            viz_type = st.selectbox("Выберите тип визуализации", 
-                                ["Гистограмма", "Box Plot", "Scatter Plot", "Корреляционная матрица"],
-                                key="viz_type")
+            viz_type = st.selectbox(
+                "Выберите тип визуализации", 
+                ["Гистограмма", "Box Plot", "Scatter Plot", "Корреляционная матрица"],
+                key="viz_type"
+            )
             
             if viz_type in ["Гистограмма", "Box Plot"]:
-                column = st.selectbox("Выберите столбец", 
-                                   df.select_dtypes(include=[np.number]).columns,
-                                   key="viz_column")
-                if viz_type == "Гистограмма":
-                    create_histogram(df, column)
+                numerical_cols = df.select_dtypes(include=[np.number]).columns
+                if len(numerical_cols) > 0:
+                    column = st.selectbox(
+                        "Выберите столбец", 
+                        numerical_cols,
+                        key="viz_column"
+                    )
+                    if column:
+                        if viz_type == "Гистограмма":
+                            create_histogram(df, column)
+                        else:
+                            create_box_plot(df, column)
+                        save_current_state()
                 else:
-                    create_box_plot(df, column)
+                    st.info("В датасете нет числовых столбцов для визуализации")
                     
             elif viz_type == "Scatter Plot":
-                col1, col2 = st.columns(2)
-                with col1:
-                    x_column = st.selectbox("Выберите X", 
-                                        df.select_dtypes(include=[np.number]).columns,
-                                        key="scatter_x")
-                with col2:
-                    y_column = st.selectbox("Выберите Y", 
-                                        df.select_dtypes(include=[np.number]).columns,
-                                        key="scatter_y")
-                create_scatter_plot(df, x_column, y_column)
+                numerical_cols = df.select_dtypes(include=[np.number]).columns
+                if len(numerical_cols) > 0:
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        x_column = st.selectbox(
+                            "Выберите X", 
+                            numerical_cols,
+                            key="scatter_x"
+                        )
+                    with col2:
+                        y_column = st.selectbox(
+                            "Выберите Y", 
+                            numerical_cols,
+                            key="scatter_y"
+                        )
+                    if x_column and y_column:
+                        create_scatter_plot(df, x_column, y_column)
+                        save_current_state()
+                else:
+                    st.info("В датасете нет числовых столбцов для визуализации")
                 
             else:
                 plot_correlation_matrix(df)
-            
-            save_current_state()
+                save_current_state()
         
         # Вкладка предобработки
         with tabs[3]:
             st.subheader("Предобработка данных")
             
-            process_type = st.selectbox("Выберите тип обработки", 
-                                    ["Изменение типов данных", 
-                                     "Обработка пропусков", 
-                                     "Удаление дубликатов"],
-                                    key="process_type")
+            process_type = st.selectbox(
+                "Выберите тип обработки", 
+                ["Изменение типов данных", "Обработка пропусков", "Удаление дубликатов"],
+                key="process_type"
+            )
             
             if process_type == "Изменение типов данных":
                 col1, col2 = st.columns(2)
                 with col1:
-                    column = st.selectbox("Выберите столбец", df.columns,
-                                       key="change_type_column")
+                    column = st.selectbox(
+                        "Выберите столбец",
+                        df.columns,
+                        key="change_type_column"
+                    )
                 with col2:
-                    new_type = st.selectbox("Выберите новый тип", 
-                                        ['int64', 'float64', 'str', 'category'],
-                                        key="new_type")
+                    new_type = st.selectbox(
+                        "Выберите новый тип", 
+                        ['int64', 'float64', 'str', 'category'],
+                        key="new_type"
+                    )
                 
                 if st.button("Применить"):
                     df, success = change_column_type(df, column, new_type)
@@ -250,12 +275,17 @@ def main():
             elif process_type == "Обработка пропусков":
                 col1, col2 = st.columns(2)
                 with col1:
-                    column = st.selectbox("Выберите столбец", df.columns,
-                                       key="missing_column")
+                    column = st.selectbox(
+                        "Выберите столбец",
+                        df.columns,
+                        key="missing_column"
+                    )
                 with col2:
-                    method = st.selectbox("Выберите метод", 
-                                      ['drop', 'fill_value', 'fill_mean', 'fill_median'],
-                                      key="missing_method")
+                    method = st.selectbox(
+                        "Выберите метод", 
+                        ['drop', 'fill_value', 'fill_mean', 'fill_median'],
+                        key="missing_method"
+                    )
                 
                 value = None
                 if method == 'fill_value':
@@ -282,17 +312,20 @@ def main():
         with tabs[4]:
             st.subheader("Экспорт данных")
             
-            format_type = st.selectbox("Выберите формат", ['csv', 'excel'],
-                                   key="export_format")
+            format_type = st.selectbox(
+                "Выберите формат",
+                ['csv', 'excel'],
+                key="export_format"
+            )
             
             if st.button("Экспортировать"):
-                data, mime_type, file_name = export_data(df, format_type)
+                data = export_data(df, format_type)
                 if data:
                     st.download_button(
                         label="📥 Скачать файл",
-                        data=data,
+                        data=data[0],
                         file_name=f"data_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{format_type}",
-                        mime=mime_type
+                        mime=data[1]
                     )
                     save_current_state()
         
