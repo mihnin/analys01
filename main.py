@@ -10,6 +10,8 @@ from utils.data_visualizer import (create_histogram, create_box_plot,
                                 plot_missing_values, plot_outliers)
 from utils.data_processor import (change_column_type, handle_missing_values,
                                remove_duplicates, export_data)
+from utils.predictor import (prepare_data, train_model, evaluate_model,
+                          plot_feature_importance, plot_predictions)
 
 def load_test_data():
     """
@@ -50,7 +52,7 @@ def main():
         df = st.session_state['df']
         
         # Создание вкладок
-        tabs = st.tabs(["Обзор", "Анализ", "Визуализация", "Предобработка", "Экспорт"])
+        tabs = st.tabs(["Обзор", "Анализ", "Визуализация", "Прогнозирование", "Предобработка", "Экспорт"])
         
         # Вкладка обзора
         with tabs[0]:
@@ -64,13 +66,14 @@ def main():
             get_numerical_stats(df)
             plot_missing_values(df)
             
-            # Добавляем анализ выбросов
+            # Анализ выбросов
             st.subheader("Анализ выбросов")
             numerical_cols = df.select_dtypes(include=[np.number]).columns
             if len(numerical_cols) > 0:
                 selected_column = st.selectbox(
                     "Выберите столбец для анализа выбросов",
-                    numerical_cols
+                    numerical_cols,
+                    key="outliers_column"
                 )
                 lower_bound, upper_bound = analyze_outliers(df, selected_column)
                 plot_outliers(df, selected_column, lower_bound, upper_bound)
@@ -82,11 +85,13 @@ def main():
             st.subheader("Визуализация данных")
             
             viz_type = st.selectbox("Выберите тип визуализации", 
-                                 ["Гистограмма", "Box Plot", "Scatter Plot", "Корреляционная матрица"])
+                                 ["Гистограмма", "Box Plot", "Scatter Plot", "Корреляционная матрица"],
+                                 key="viz_type")
             
             if viz_type in ["Гистограмма", "Box Plot"]:
                 column = st.selectbox("Выберите столбец", 
-                                   df.select_dtypes(include=[np.number]).columns)
+                                   df.select_dtypes(include=[np.number]).columns,
+                                   key="viz_column")
                 if viz_type == "Гистограмма":
                     create_histogram(df, column)
                 else:
@@ -96,31 +101,98 @@ def main():
                 col1, col2 = st.columns(2)
                 with col1:
                     x_column = st.selectbox("Выберите X", 
-                                         df.select_dtypes(include=[np.number]).columns)
+                                         df.select_dtypes(include=[np.number]).columns,
+                                         key="scatter_x")
                 with col2:
                     y_column = st.selectbox("Выберите Y", 
-                                         df.select_dtypes(include=[np.number]).columns)
+                                         df.select_dtypes(include=[np.number]).columns,
+                                         key="scatter_y")
                 create_scatter_plot(df, x_column, y_column)
                 
             else:
                 plot_correlation_matrix(df)
         
-        # Вкладка предобработки
+        # Вкладка прогнозирования
         with tabs[3]:
+            st.subheader("Прогнозирование")
+            
+            # Выбор типа задачи
+            task_type = st.selectbox(
+                "Выберите тип задачи",
+                ["Регрессия", "Классификация"],
+                key="task_type"
+            )
+            task_type = task_type.lower()
+            
+            # Выбор целевой переменной
+            if task_type == "регрессия":
+                target_columns = df.select_dtypes(include=[np.number]).columns
+            else:
+                target_columns = df.select_dtypes(include=['object', 'category']).columns
+                
+            target = st.selectbox(
+                "Выберите целевую переменную",
+                target_columns,
+                key="target"
+            )
+            
+            # Выбор признаков
+            feature_columns = st.multiselect(
+                "Выберите признаки для прогнозирования",
+                [col for col in df.columns if col != target],
+                key="features"
+            )
+            
+            if st.button("Обучить модель") and len(feature_columns) > 0:
+                with st.spinner("Обучение модели..."):
+                    # Подготовка данных
+                    X_train, X_test, y_train, y_test, scaler = prepare_data(
+                        df, target, feature_columns
+                    )
+                    
+                    # Обучение модели
+                    model = train_model(X_train, y_train, task_type)
+                    
+                    # Получение прогнозов
+                    predictions = model.predict(X_test)
+                    
+                    # Оценка качества
+                    metrics = evaluate_model(model, X_test, y_test, task_type)
+                    
+                    # Вывод метрик
+                    st.subheader("Метрики качества модели:")
+                    for metric, value in metrics.items():
+                        if metric != 'Report':
+                            st.metric(metric, value)
+                    
+                    # Визуализация результатов
+                    st.subheader("Важность признаков:")
+                    plot_feature_importance(model, 
+                                         pd.get_dummies(df[feature_columns], 
+                                                      drop_first=True).columns)
+                    
+                    st.subheader("Сравнение прогнозов с фактическими значениями:")
+                    plot_predictions(y_test, predictions, task_type)
+        
+        # Вкладка предобработки
+        with tabs[4]:
             st.subheader("Предобработка данных")
             
             process_type = st.selectbox("Выберите тип обработки", 
                                      ["Изменение типов данных", 
                                       "Обработка пропусков", 
-                                      "Удаление дубликатов"])
+                                      "Удаление дубликатов"],
+                                     key="process_type")
             
             if process_type == "Изменение типов данных":
                 col1, col2 = st.columns(2)
                 with col1:
-                    column = st.selectbox("Выберите столбец", df.columns)
+                    column = st.selectbox("Выберите столбец", df.columns,
+                                        key="change_type_column")
                 with col2:
                     new_type = st.selectbox("Выберите новый тип", 
-                                         ['int64', 'float64', 'str', 'category'])
+                                         ['int64', 'float64', 'str', 'category'],
+                                         key="new_type")
                 
                 if st.button("Применить"):
                     df, success = change_column_type(df, column, new_type)
@@ -131,10 +203,12 @@ def main():
             elif process_type == "Обработка пропусков":
                 col1, col2 = st.columns(2)
                 with col1:
-                    column = st.selectbox("Выберите столбец", df.columns)
+                    column = st.selectbox("Выберите столбец", df.columns,
+                                        key="missing_column")
                 with col2:
                     method = st.selectbox("Выберите метод", 
-                                       ['drop', 'fill_value', 'fill_mean', 'fill_median'])
+                                       ['drop', 'fill_value', 'fill_mean', 'fill_median'],
+                                       key="missing_method")
                 
                 value = None
                 if method == 'fill_value':
@@ -154,10 +228,11 @@ def main():
                         st.success("Дубликаты успешно удалены")
         
         # Вкладка экспорта
-        with tabs[4]:
+        with tabs[5]:
             st.subheader("Экспорт данных")
             
-            format_type = st.selectbox("Выберите формат", ['csv', 'excel'])
+            format_type = st.selectbox("Выберите формат", ['csv', 'excel'],
+                                     key="export_format")
             
             if st.button("Экспортировать"):
                 data, mime_type, filename = export_data(df, format_type)
