@@ -3,22 +3,25 @@ import pandas as pd
 import numpy as np
 from utils.data_loader import get_file_uploader
 from utils.data_analyzer import (get_basic_info, analyze_data_types, 
-                               analyze_duplicates, get_numerical_stats,
-                               analyze_outliers)
+                                analyze_duplicates, get_numerical_stats,
+                                analyze_outliers)
 from utils.data_visualizer import (create_histogram, create_box_plot, 
                                 create_scatter_plot, plot_correlation_matrix,
                                 plot_missing_values, plot_outliers)
 from utils.data_processor import (change_column_type, handle_missing_values,
-                               remove_duplicates, export_data)
+                                remove_duplicates, export_data)
 from utils.predictor import (prepare_data, train_model, evaluate_model,
-                          plot_feature_importance, plot_predictions)
+                           plot_feature_importance, plot_predictions)
+from utils.database import init_db, save_dataframe, load_dataframe, delete_dataframe
 
 def load_test_data():
     """
     Загрузка тестового набора данных
     """
     try:
-        return pd.read_csv('test_data.csv')
+        df = pd.read_csv('test_data.csv')
+        save_dataframe(df)  # Сохраняем в БД
+        return df
     except Exception as e:
         st.error(f"Ошибка при загрузке тестовых данных: {str(e)}")
         return None
@@ -59,22 +62,35 @@ def main():
         layout="wide"
     )
 
+    # Инициализация БД при запуске
+    if not init_db():
+        st.error("Не удалось инициализировать базу данных")
+        return
+
     st.title("📊 Комплексный анализ данных")
     
     # Секция загрузки данных
     st.subheader("Загрузка данных")
+    
+    # Попытка загрузить данные из БД при старте
+    if 'df' not in st.session_state:
+        df = load_dataframe()
+        if df is not None:
+            st.session_state['df'] = df
     
     # Кнопка загрузки тестовых данных
     if st.button("📥 Загрузить тестовые данные"):
         test_df = load_test_data()
         if test_df is not None:
             st.session_state['df'] = test_df
+            save_dataframe(test_df)  # Сохраняем в БД
             st.success("Тестовые данные успешно загружены!")
             
     # Стандартный загрузчик файлов
     uploaded_df = get_file_uploader()
     if uploaded_df is not None:
         st.session_state['df'] = uploaded_df
+        save_dataframe(uploaded_df)  # Сохраняем в БД
     
     # Работа с загруженными данными
     if 'df' in st.session_state:
@@ -114,13 +130,13 @@ def main():
             st.subheader("Визуализация данных")
             
             viz_type = st.selectbox("Выберите тип визуализации", 
-                                 ["Гистограмма", "Box Plot", "Scatter Plot", "Корреляционная матрица"],
-                                 key="viz_type")
+                                  ["Гистограмма", "Box Plot", "Scatter Plot", "Корреляционная матрица"],
+                                  key="viz_type")
             
             if viz_type in ["Гистограмма", "Box Plot"]:
                 column = st.selectbox("Выберите столбец", 
-                                   df.select_dtypes(include=[np.number]).columns,
-                                   key="viz_column")
+                                    df.select_dtypes(include=[np.number]).columns,
+                                    key="viz_column")
                 if viz_type == "Гистограмма":
                     create_histogram(df, column)
                 else:
@@ -130,12 +146,12 @@ def main():
                 col1, col2 = st.columns(2)
                 with col1:
                     x_column = st.selectbox("Выберите X", 
-                                         df.select_dtypes(include=[np.number]).columns,
-                                         key="scatter_x")
+                                          df.select_dtypes(include=[np.number]).columns,
+                                          key="scatter_x")
                 with col2:
                     y_column = st.selectbox("Выберите Y", 
-                                         df.select_dtypes(include=[np.number]).columns,
-                                         key="scatter_y")
+                                          df.select_dtypes(include=[np.number]).columns,
+                                          key="scatter_y")
                 create_scatter_plot(df, x_column, y_column)
                 
             else:
@@ -213,10 +229,10 @@ def main():
             st.subheader("Предобработка данных")
             
             process_type = st.selectbox("Выберите тип обработки", 
-                                     ["Изменение типов данных", 
-                                      "Обработка пропусков", 
-                                      "Удаление дубликатов"],
-                                     key="process_type")
+                                      ["Изменение типов данных", 
+                                       "Обработка пропусков", 
+                                       "Удаление дубликатов"],
+                                      key="process_type")
             
             if process_type == "Изменение типов данных":
                 col1, col2 = st.columns(2)
@@ -225,13 +241,14 @@ def main():
                                        key="change_type_column")
                 with col2:
                     new_type = st.selectbox("Выберите новый тип", 
-                                        ['int64', 'float64', 'str', 'category'],
-                                        key="new_type")
+                                         ['int64', 'float64', 'str', 'category'],
+                                         key="new_type")
                 
                 if st.button("Применить"):
                     df, success = change_column_type(df, column, new_type)
                     if success:
                         st.session_state['df'] = df
+                        save_dataframe(df)  # Сохраняем изменения в БД
                         st.success("Тип данных успешно изменен")
                         
             elif process_type == "Обработка пропусков":
@@ -252,6 +269,7 @@ def main():
                     df, success = handle_missing_values(df, column, method, value)
                     if success:
                         st.session_state['df'] = df
+                        save_dataframe(df)  # Сохраняем изменения в БД
                         st.success("Пропуски успешно обработаны")
                         
             else:
@@ -259,6 +277,7 @@ def main():
                     df, success = remove_duplicates(df)
                     if success:
                         st.session_state['df'] = df
+                        save_dataframe(df)  # Сохраняем изменения в БД
                         st.success("Дубликаты успешно удалены")
         
         # Вкладка экспорта
