@@ -52,44 +52,80 @@ def save_current_state():
     """
     Сохранение текущего состояния анализа
     """
-    state = {
-        'viz_settings': {
-            'viz_type': st.session_state.get('viz_type', 'Гистограмма'),
-            'viz_column': st.session_state.get('viz_column', None),
-            'scatter_x': st.session_state.get('scatter_x', None),
-            'scatter_y': st.session_state.get('scatter_y', None)
-        },
-        'process_settings': {
-            'process_type': st.session_state.get('process_type', 'Изменение типов данных'),
-            'change_type_column': st.session_state.get('change_type_column', None),
-            'new_type': st.session_state.get('new_type', 'int64'),
-            'missing_column': st.session_state.get('missing_column', None),
-            'missing_method': st.session_state.get('missing_method', 'drop')
-        },
-        'outliers_column': st.session_state.get('outliers_column', None)
-    }
-    save_analysis_state('main_app', state)
+    try:
+        state = {
+            'viz_settings': {
+                'viz_type': st.session_state.get('viz_type', 'Гистограмма'),
+                'viz_column': st.session_state.get('viz_column', None),
+                'scatter_x': st.session_state.get('scatter_x', None),
+                'scatter_y': st.session_state.get('scatter_y', None),
+                'corr_matrix_shown': st.session_state.get('corr_matrix_shown', False)
+            },
+            'process_settings': {
+                'process_type': st.session_state.get('process_type', 'Изменение типов данных'),
+                'change_type_column': st.session_state.get('change_type_column', None),
+                'new_type': st.session_state.get('new_type', 'int64'),
+                'missing_column': st.session_state.get('missing_column', None),
+                'missing_method': st.session_state.get('missing_method', 'drop'),
+                'fill_value': st.session_state.get('fill_value', None)
+            },
+            'analysis_settings': {
+                'outliers_column': st.session_state.get('outliers_column', None),
+                'selected_stats_column': st.session_state.get('selected_stats_column', None)
+            },
+            'report_settings': {
+                'selected_sections': st.session_state.get('selected_sections', 
+                    ["Базовая информация", "Типы данных", "Статистика"])
+            },
+            'last_tab': st.session_state.get('last_tab', 0)
+        }
+        if save_analysis_state('main_app', state):
+            st.success("✅ Состояние анализа успешно сохранено", icon="💾")
+    except Exception as e:
+        st.error(f"Ошибка при сохранении состояния: {str(e)}")
 
 def load_saved_state():
     """
     Загрузка сохраненного состояния анализа
     """
-    state = load_analysis_state('main_app')
-    if state:
-        viz_settings = state.get('viz_settings', {})
-        st.session_state['viz_type'] = viz_settings.get('viz_type', 'Гистограмма')
-        st.session_state['viz_column'] = viz_settings.get('viz_column')
-        st.session_state['scatter_x'] = viz_settings.get('scatter_x')
-        st.session_state['scatter_y'] = viz_settings.get('scatter_y')
-        
-        process_settings = state.get('process_settings', {})
-        st.session_state['process_type'] = process_settings.get('process_type', 'Изменение типов данных')
-        st.session_state['change_type_column'] = process_settings.get('change_type_column')
-        st.session_state['new_type'] = process_settings.get('new_type', 'int64')
-        st.session_state['missing_column'] = process_settings.get('missing_column')
-        st.session_state['missing_method'] = process_settings.get('missing_method', 'drop')
-        
-        st.session_state['outliers_column'] = state.get('outliers_column')
+    try:
+        state = load_analysis_state('main_app')
+        if state:
+            # Visualization settings
+            viz_settings = state.get('viz_settings', {})
+            st.session_state['viz_type'] = viz_settings.get('viz_type', 'Гистограмма')
+            st.session_state['viz_column'] = viz_settings.get('viz_column')
+            st.session_state['scatter_x'] = viz_settings.get('scatter_x')
+            st.session_state['scatter_y'] = viz_settings.get('scatter_y')
+            st.session_state['corr_matrix_shown'] = viz_settings.get('corr_matrix_shown', False)
+            
+            # Processing settings
+            process_settings = state.get('process_settings', {})
+            st.session_state['process_type'] = process_settings.get('process_type', 'Изменение типов данных')
+            st.session_state['change_type_column'] = process_settings.get('change_type_column')
+            st.session_state['new_type'] = process_settings.get('new_type', 'int64')
+            st.session_state['missing_column'] = process_settings.get('missing_column')
+            st.session_state['missing_method'] = process_settings.get('missing_method', 'drop')
+            st.session_state['fill_value'] = process_settings.get('fill_value')
+            
+            # Analysis settings
+            analysis_settings = state.get('analysis_settings', {})
+            st.session_state['outliers_column'] = analysis_settings.get('outliers_column')
+            st.session_state['selected_stats_column'] = analysis_settings.get('selected_stats_column')
+            
+            # Report settings
+            report_settings = state.get('report_settings', {})
+            st.session_state['selected_sections'] = report_settings.get('selected_sections', 
+                ["Базовая информация", "Типы данных", "Статистика"])
+            
+            # Last active tab
+            st.session_state['last_tab'] = state.get('last_tab', 0)
+            
+            st.success("✅ Состояние анализа успешно загружено", icon="📂")
+            return True
+    except Exception as e:
+        st.error(f"Ошибка при загрузке состояния: {str(e)}")
+    return False
 
 def main():
     st.set_page_config(
@@ -103,7 +139,7 @@ def main():
         st.error("Не удалось инициализировать базу данных")
         return
 
-    # Загрузка сохраненного состояния
+    # Загрузка сохраненного состояния при первом запуске
     if 'state_loaded' not in st.session_state:
         load_saved_state()
         st.session_state['state_loaded'] = True
@@ -156,6 +192,12 @@ def main():
         ]
         
         tabs = st.tabs(tab_names)
+        
+        # Отслеживание состояния вкладок
+        current_tab = tabs.index(st.tabs[st.session_state.get('last_tab', 0)])
+        if st.session_state.get('last_tab') != current_tab:
+            st.session_state['last_tab'] = current_tab
+            save_current_state()
         
         # Вкладка обзора
         with tabs[0]:
@@ -235,7 +277,7 @@ def main():
                 else:
                     st.info("В датасете нет числовых столбцов для визуализации")
                 
-            else:
+            else:  # Корреляционная матрица
                 plot_correlation_matrix(df)
                 save_current_state()
         
@@ -289,7 +331,7 @@ def main():
                 
                 value = None
                 if method == 'fill_value':
-                    value = st.text_input("Введите значение для заполнения")
+                    value = st.text_input("Введите значение для заполнения", key="fill_value")
                 
                 if st.button("Применить"):
                     df, success = handle_missing_values(df, column, method, value)
@@ -299,7 +341,7 @@ def main():
                         st.success("✅ Пропуски успешно обработаны")
                         save_current_state()
                         
-            else:
+            else:  # Удаление дубликатов
                 if st.button("Удалить дубликаты"):
                     df, success = remove_duplicates(df)
                     if success:
@@ -319,13 +361,15 @@ def main():
             )
             
             if st.button("Экспортировать"):
-                data = export_data(df, format_type)
-                if data:
+                result = export_data(df, format_type)
+                if result and len(result) == 3:
+                    data, mime_type, _ = result
+                    file_ext = format_type
                     st.download_button(
                         label="📥 Скачать файл",
-                        data=data[0],
-                        file_name=f"data_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{format_type}",
-                        mime=data[1]
+                        data=data,
+                        file_name=f"data_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{file_ext}",
+                        mime=mime_type
                     )
                     save_current_state()
         
@@ -352,24 +396,26 @@ def main():
         with tabs[6]:
             st.subheader("Генерация отчетов")
             
-            report_options = st.multiselect(
+            report_sections = st.multiselect(
                 "Выберите разделы для включения в отчет",
                 ["Базовая информация", "Типы данных", "Статистика", 
                  "Пропущенные значения", "Дубликаты"],
-                default=["Базовая информация", "Типы данных", "Статистика"]
+                default=["Базовая информация", "Типы данных", "Статистика"],
+                key="selected_sections"
             )
             
             if st.button("Сгенерировать отчет"):
                 try:
-                    report_bytes = generate_data_report(df, sections=report_options)
-                    st.download_button(
-                        label="📥 Скачать отчет",
-                        data=report_bytes,
-                        file_name=f"data_analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
-                        mime="application/pdf"
-                    )
-                    st.success("✅ Отчет успешно сгенерирован!")
-                    save_current_state()
+                    report_bytes = generate_data_report(df, sections=report_sections)
+                    if report_bytes:
+                        st.download_button(
+                            label="📥 Скачать отчет",
+                            data=report_bytes,
+                            file_name=f"data_analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+                            mime="application/pdf"
+                        )
+                        st.success("✅ Отчет успешно сгенерирован!")
+                        save_current_state()
                 except Exception as e:
                     st.error(f"Ошибка при генерации отчета: {str(e)}")
 

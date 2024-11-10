@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from fpdf import FPDF2 as FPDF
+from fpdf.fpdf import FPDF
 import io
 from datetime import datetime
 
@@ -11,9 +11,9 @@ class ReportGenerator:
         self.pdf = FPDF()
         self.pdf.add_page()
         
-        # Add built-in Unicode font
-        self.pdf.add_font('DejaVu', '', '', uni=True)
-        self.pdf.set_font('DejaVu', size=12)
+        # Add Unicode font support
+        self.pdf.add_font('DejaVu', '', '')
+        self.pdf.set_font('DejaVu', '', 12)
         
         # Enable auto page break
         self.pdf.set_auto_page_break(auto=True, margin=15)
@@ -21,9 +21,9 @@ class ReportGenerator:
     def add_title(self, title):
         """Добавление заголовка в отчет"""
         try:
-            self.pdf.set_font('DejaVu', size=16)
+            self.pdf.set_font('DejaVu', '', 16)
             self.pdf.cell(0, 10, txt=title, ln=True, align='C')
-            self.pdf.set_font('DejaVu', size=12)
+            self.pdf.set_font('DejaVu', '', 12)
             self.pdf.ln(5)
         except Exception as e:
             st.error(f"Ошибка при добавлении заголовка: {str(e)}")
@@ -31,9 +31,9 @@ class ReportGenerator:
     def add_section(self, title):
         """Добавление подзаголовка раздела"""
         try:
-            self.pdf.set_font('DejaVu', size=14)
+            self.pdf.set_font('DejaVu', '', 14)
             self.pdf.cell(0, 10, txt=title, ln=True)
-            self.pdf.set_font('DejaVu', size=12)
+            self.pdf.set_font('DejaVu', '', 12)
             self.pdf.ln(2)
         except Exception as e:
             st.error(f"Ошибка при добавлении раздела: {str(e)}")
