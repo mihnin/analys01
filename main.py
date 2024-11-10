@@ -77,7 +77,7 @@ def save_current_state():
                 'selected_sections': st.session_state.get('selected_sections', 
                     ["Базовая информация", "Типы данных", "Статистика"])
             },
-            'last_tab': st.session_state.get('last_tab', 0)
+            'last_tab': st.session_state.get('active_tab', 0)
         }
         if save_analysis_state('main_app', state):
             st.success("✅ Состояние анализа успешно сохранено", icon="💾")
@@ -119,7 +119,7 @@ def load_saved_state():
                 ["Базовая информация", "Типы данных", "Статистика"])
             
             # Last active tab
-            st.session_state['last_tab'] = state.get('last_tab', 0)
+            st.session_state['active_tab'] = state.get('last_tab', 0)
             
             st.success("✅ Состояние анализа успешно загружено", icon="📂")
             return True
@@ -193,10 +193,18 @@ def main():
         
         tabs = st.tabs(tab_names)
         
-        # Отслеживание состояния вкладок
-        current_tab = tabs.index(st.tabs[st.session_state.get('last_tab', 0)])
-        if st.session_state.get('last_tab') != current_tab:
-            st.session_state['last_tab'] = current_tab
+        # Track active tab using radio buttons in sidebar
+        st.session_state['last_tab'] = st.sidebar.radio(
+            "Перейти к разделу:",
+            range(len(tab_names)),
+            format_func=lambda x: tab_names[x],
+            key='active_tab',
+            label_visibility="collapsed"
+        )
+        
+        # Save state when tab changes
+        if 'prev_tab' not in st.session_state or st.session_state.prev_tab != st.session_state.last_tab:
+            st.session_state.prev_tab = st.session_state.last_tab
             save_current_state()
         
         # Вкладка обзора
@@ -355,9 +363,8 @@ def main():
             st.subheader("Экспорт данных")
             
             format_type = st.selectbox(
-                "Выберите формат",
-                ['csv', 'excel'],
-                key="export_format"
+                "Выберите формат файла", 
+                ["csv", "excel"]
             )
             
             if st.button("Экспортировать"):
@@ -397,7 +404,7 @@ def main():
             st.subheader("Генерация отчетов")
             
             report_sections = st.multiselect(
-                "Выберите разделы для включения в отчет",
+                "Выберите разделы для отчета",
                 ["Базовая информация", "Типы данных", "Статистика", 
                  "Пропущенные значения", "Дубликаты"],
                 default=["Базовая информация", "Типы данных", "Статистика"],
