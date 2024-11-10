@@ -13,6 +13,7 @@ from utils.data_processor import (change_column_type, handle_missing_values,
                                 remove_duplicates, export_data)
 from utils.database import (init_db, save_dataframe, load_dataframe, delete_dataframe,
                            get_table_info, get_last_update)
+from utils.report_generator import generate_data_report
 
 def load_test_data():
     """
@@ -99,7 +100,8 @@ def main():
             "Визуализация",
             "Предобработка",
             "Экспорт",
-            "База данных"
+            "База данных",
+            "Отчеты"
         ])
         
         # Вкладка обзора
@@ -250,6 +252,31 @@ def main():
                         st.experimental_rerun()
             else:
                 st.info("База данных пуста")
+
+        # Вкладка отчетов
+        with tabs[6]:
+            st.subheader("Генерация отчетов")
+            
+            report_options = st.multiselect(
+                "Выберите разделы для включения в отчет",
+                ["Базовая информация", "Типы данных", "Статистика", 
+                 "Пропущенные значения", "Дубликаты"],
+                default=["Базовая информация", "Типы данных", "Статистика"]
+            )
+            
+            if st.button("Сгенерировать отчет"):
+                try:
+                    report_bytes = generate_data_report(df, sections=report_options)
+                    
+                    st.download_button(
+                        label="📥 Скачать отчет",
+                        data=report_bytes,
+                        file_name=f"data_analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+                        mime="application/pdf"
+                    )
+                    st.success("✅ Отчет успешно сгенерирован!")
+                except Exception as e:
+                    st.error(f"Ошибка при генерации отчета: {str(e)}")
 
 if __name__ == "__main__":
     main()
