@@ -4,6 +4,7 @@ import streamlit as st
 from pathlib import Path
 import gzip
 import zipfile
+import logging
 
 def detect_encoding(file_path: str) -> str:
     """Упрощенное определение кодировки файла"""
@@ -54,6 +55,31 @@ def validate_dataframe(df: pd.DataFrame) -> Tuple[bool, str]:
         
     return True, ""
 
+def parse_datetime_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Автоматическое определение и парсинг столбцов с датой
+    """
+    # Список возможных форматов даты
+    date_formats = [
+        '%Y-%m-%d', '%d.%m.%Y', '%m/%d/%Y', 
+        '%Y/%m/%d', '%d-%m-%Y', '%m-%d-%Y',
+        '%Y-%m-%d %H:%M:%S', '%d.%m.%Y %H:%M:%S'
+    ]
+    
+    # Поиск столбцов с потенциальными датами
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            for date_format in date_formats:
+                try:
+                    # Попытка распарсить столбец как дату
+                    df[col] = pd.to_datetime(df[col], format=date_format)
+                    st.info(f"Столбец '{col}' распознан как дата в формате {date_format}")
+                    break
+                except (ValueError, TypeError):
+                    continue
+    
+    return df
+
 def load_data(file, file_type: str, **kwargs) -> Optional[pd.DataFrame]:
     """Улучшенная загрузка данных"""
     try:
@@ -79,6 +105,9 @@ def load_data(file, file_type: str, **kwargs) -> Optional[pd.DataFrame]:
         if not is_valid:
             st.error(f"Ошибка валидации данных: {error_message}")
             return None
+        
+        # Автоматический парсинг столбцов с датами
+        df = parse_datetime_columns(df)
             
         return df
     except Exception as e:
@@ -101,7 +130,26 @@ def get_file_uploader():
             if file_type == 'csv':
                 separator = st.text_input("Разделитель", value=",")
                 encoding = st.selectbox("Кодировка", ['utf-8', 'cp1251', 'latin1'])
-                df = load_data(file, file_type, sep=separator, encoding=encoding)
+                
+                # Добавляем выбор столбца даты
+                st.subheader("Настройка даты")
+                date_column = st.text_input("Столбец даты (необязательно)", value="")
+                date_format = st.text_input("Формат даты (необязательно)", value="")
+                
+                # Параметры для парсинга даты
+                parse_dates = [date_column] if date_column else None
+                date_parser = None
+                if date_format:
+                    date_parser = lambda x: pd.to_datetime(x, format=date_format)
+                
+                df = load_data(
+                    file, 
+                    file_type, 
+                    sep=separator, 
+                    encoding=encoding,
+                    parse_dates=parse_dates,
+                    date_parser=date_parser
+                )
             else:
                 sheet_name = st.text_input("Имя листа (оставьте пустым для первого листа)", value="")
                 kwargs = {'sheet_name': sheet_name} if sheet_name else {}

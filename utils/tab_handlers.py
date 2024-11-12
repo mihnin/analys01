@@ -10,6 +10,7 @@ from utils.report_generator import generate_data_report
 from datetime import datetime
 from pathlib import Path
 import logging
+import pandas as pd
 
 def show_overview_tab(df):
     st.header("Обзор")
@@ -22,6 +23,15 @@ def show_analysis_tab(df):
     analyze_duplicates(df)
     get_numerical_stats(df)
     plot_missing_values(df)
+
+    # --- Добавлено: Анализ трендов и сезонности ---
+    st.subheader("Анализ трендов и сезонности")
+    analyze_trends_and_seasonality(df)
+
+    # --- Добавлено: Обнаружение аномалий ---
+    st.subheader("Обнаружение аномалий")
+    detect_anomalies(df)
+
 
 def show_visualization_tab(df):
     st.header("Визуализация")
@@ -115,3 +125,15 @@ def show_reports_tab(df):
                     )
             except Exception as e:
                 st.error(f"Ошибка при создании отчета: {str(e)}")
+
+def analyze_trends_and_seasonality(df):
+    """
+    Функция для анализа трендов и сезонности (пока пустая)
+    """
+    st.write("Функционал анализа трендов и сезонности будет добавлен позже.")
+
+def detect_anomalies(df):
+    """
+    Функция для обнаружения аномалий (пока пустая)
+    """
+    st.write("Функционал обнаружения аномалий будет добавлен позже.")
