@@ -7,6 +7,7 @@ from utils.tab_handlers import (
     show_overview_tab, show_analysis_tab, show_visualization_tab,
     show_preprocessing_tab, show_export_tab, show_database_tab, show_reports_tab
 )
+from utils.report_generator import generate_data_report
 
 logger = setup_logging()
 
