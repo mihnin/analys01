@@ -26,7 +26,7 @@ def show_analysis_tab(df):
     plot_missing_values(df)
 
     # --- Анализ трендов и сезонности ---
-    st.subheader("Анализ трендов и сезонности")
+    st.subheader("Анализ тренд��в и сезонности")
     
     # Определение столбцов с датами
     date_columns = df.select_dtypes(include=['datetime64']).columns.tolist()
@@ -47,7 +47,7 @@ def show_analysis_tab(df):
         return
         
     if not numeric_columns:
-        st.warning("В д��тасете не найдены числовые столбцы")
+        st.warning("В датасете не найдены числовые столбцы")
         return
         
     date_column = st.selectbox(
@@ -101,17 +101,51 @@ def show_preprocessing_tab(df):
     st.header("Предобработка")
     process_type = st.selectbox(
         "Выберите тип обработки", 
-        ["Изменение типов данных", "Обработка проп��сков", "Удаление дубликатов"]
+        ["Изменение типов данных", "Обработка пропусков", "Удаление дубликатов"]
     )
     
     if process_type == "Изменение типов данных":
+        # ...existing code for changing data types...
+        pass  # Ваш существующий код
+
+    elif process_type == "Обработка пропусков":
         column = st.selectbox("Выберите столбец", df.columns)
-        new_type = st.selectbox("Выберите новый тип", ['int64', 'float64', 'str', 'category'])
+        method = st.selectbox(
+            "Выберите метод обработки",
+            ["Удалить строки с пропусками", "Заполнить значением", "Заполнить средним", "Заполнить медианой"]
+        )
+        value = None
+        if method == "Заполнить значением":
+            value = st.text_input("Введите значение для заполнения")
         if st.button("Применить"):
-            df, success = change_column_type(df, column, new_type)
+            method_mapping = {
+                "Удалить строки с пропусками": "drop",
+                "Заполнить значением": "fill_value",
+                "Заполнить средним": "fill_mean",
+                "Заполнить медианой": "fill_median"
+            }
+            selected_method = method_mapping[method]
+            df, success = handle_missing_values(df, column, selected_method, value)
             if success:
                 st.session_state['df'] = df
-                st.success("✅ Тип данных успешно изменен")
+                st.success("✅ Обработка пропусков успешно выполнена")
+                st.dataframe(df.head())  # Отобразить обновленный DataFrame
+                
+    elif process_type == "Удаление дубликатов":
+        subset = st.multiselect("Выберите столбцы для проверки дубликатов (необязательно)", df.columns)
+        keep_option = st.selectbox("Какие дубликаты сохранить?", ["Первый", "Последний", "Удалить все"])
+        keep_mapping = {
+            "Первый": "first",
+            "Последний": "last",
+            "Удалить все": False
+        }
+        if st.button("Удалить дубликаты"):
+            keep = keep_mapping[keep_option]
+            df, success = remove_duplicates(df, subset=subset if subset else None, keep=keep)
+            if success:
+                st.session_state['df'] = df
+                st.success("✅ Дубликаты успешно удалены")
+                st.dataframe(df.head())  # Отобразить обновленный DataFrame
 
 def show_export_tab(df):
     st.header("Экспорт")

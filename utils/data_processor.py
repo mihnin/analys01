@@ -31,15 +31,48 @@ def handle_missing_values(df, column, method, value=None):
         st.error(f"Ошибка при обработке пропущенных значений: {str(e)}")
         return df, False
 
-def remove_duplicates(df):
+def remove_duplicates(df, subset=None, keep='first'):
     """
     Удаление дубликатов
     """
     try:
-        df = df.drop_duplicates()
+        df = df.drop_duplicates(subset=subset, keep=keep)
         return df, True
     except Exception as e:
         st.error(f"Ошибка при удалении дубликатов: {str(e)}")
+        return df, False
+
+def delete_rows(df, row_indices):
+    """
+    Удаление строк по заданным индексам
+    """
+    try:
+        df = df.drop(index=row_indices)
+        return df, True
+    except Exception as e:
+        st.error(f"Ошибка при удалении строк: {str(e)}")
+        return df, False
+
+def delete_columns(df, columns):
+    """
+    Удаление указанных столбцов
+    """
+    try:
+        df = df.drop(columns=columns)
+        return df, True
+    except Exception as e:
+        st.error(f"Ошибка при удалении столбцов: {str(e)}")
+        return df, False
+
+def add_computed_column(df, new_column_name, formula):
+    """
+    Добавление расчетного столбца на основе формулы
+    """
+    try:
+        df[new_column_name] = df.eval(formula)
+        return df, True
+    except Exception as e:
+        st.error(f"Ошибка при добавлении расчетного столбца: {str(e)}")
         return df, False
 
 def export_data(df, format_type):
