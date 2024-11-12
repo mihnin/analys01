@@ -126,3 +126,247 @@
 2024-11-12 11:35:44.419 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
 2024-11-12 11:35:44.420 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
 2024-11-12 11:35:44.420 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:53:36.865 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:53:36.866 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:53:36.867 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:53:36.867 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:53:40.360 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:53:40.360 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:53:40.361 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:53:40.361 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:53:47.836 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:53:47.837 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:53:47.837 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:53:47.837 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:53:49.021 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:53:49.022 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:53:49.022 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:53:49.022 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:53:58.030 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:53:58.031 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:53:58.031 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:53:58.031 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:53:58.846 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:53:58.847 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:53:58.847 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:53:58.848 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:54:08.491 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:54:08.492 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:54:08.492 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:54:08.493 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:54:11.798 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:54:11.799 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:54:11.799 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:54:11.800 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:54:28.149 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:54:28.150 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:54:28.150 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:54:28.150 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:54:28.826 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:54:28.826 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:54:28.827 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:54:28.827 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:02.741 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:02.741 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:02.742 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:02.742 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:03.405 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:03.405 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:03.405 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:03.406 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:14.875 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:14.875 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:14.875 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:14.876 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:15.475 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:15.476 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:15.476 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:15.477 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:25.240 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:25.241 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:25.241 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:25.241 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:25.862 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:25.863 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:25.863 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:25.864 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:33.389 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:33.390 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:33.391 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:33.391 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:33.954 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:33.954 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:33.955 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:33.955 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:36.277 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:36.278 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:36.278 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:36.279 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:36.780 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:36.781 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:36.781 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:36.782 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:36.838 - INFO - root - main.py:335 - main - Открыта вкладка генерации отчетов
+2024-11-12 11:55:43.452 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:43.454 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:43.454 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:43.455 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:43.523 - INFO - root - main.py:335 - main - Открыта вкладка генерации отчетов
+2024-11-12 11:55:48.168 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:55:48.169 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:55:48.170 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:55:48.170 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:55:48.235 - INFO - root - main.py:335 - main - Открыта вкладка генерации отчетов
+2024-11-12 11:56:00.375 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:56:00.376 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:56:00.376 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:56:00.377 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:56:05.683 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:56:05.684 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:56:05.684 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:56:05.685 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 11:56:06.193 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 11:56:06.194 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 11:56:06.195 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 11:56:06.195 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:06:33.197 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:06:33.198 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:06:33.198 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:06:33.199 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:06:46.723 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:06:46.724 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:06:46.725 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:06:46.725 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:06:49.036 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:06:49.037 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:06:49.038 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:06:49.039 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:10:54.913 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:10:54.914 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:10:54.914 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:10:54.914 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:10:57.819 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:10:57.820 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:10:57.821 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:10:57.821 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:31:54.986 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:31:54.987 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:31:54.987 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:31:54.988 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:32:00.806 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:32:00.806 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:32:00.807 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:32:00.807 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:32:00.854 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 12:32:03.261 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:32:03.262 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:32:03.262 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:32:03.262 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:32:17.862 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:32:17.864 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:32:17.864 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:32:17.864 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:34:47.864 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:34:47.865 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:34:47.866 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:34:47.866 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:34:54.357 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:34:54.358 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:34:54.358 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:34:54.359 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:34:56.352 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:34:56.352 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:34:56.353 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:34:56.353 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:35:01.193 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:35:01.193 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:35:01.193 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:35:01.194 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:38:08.978 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:38:08.978 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:38:08.979 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:38:08.980 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:38:15.851 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:38:15.852 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:38:15.853 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:38:15.853 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:38:17.390 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:38:17.391 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:38:17.391 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:38:17.392 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:38:23.766 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:38:23.767 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:38:23.767 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:38:23.768 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:38:27.362 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:38:27.363 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:38:27.364 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:38:27.364 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:40:22.647 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:40:22.647 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:40:22.648 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:40:22.648 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:40:27.172 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:40:27.173 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:40:27.173 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:40:27.173 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:40:29.256 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:40:29.257 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:40:29.258 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:40:29.258 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:40:34.914 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:40:34.915 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:40:34.915 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:40:34.916 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:42:28.140 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:42:28.141 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:42:28.141 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:42:28.141 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:42:34.195 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:42:34.196 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:42:34.196 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:42:34.197 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:42:35.568 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:42:35.569 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:42:35.570 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:42:35.571 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:43:44.960 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:43:44.961 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:43:44.962 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:43:44.962 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:43:52.057 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:43:52.058 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:43:52.059 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:43:52.059 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:43:53.267 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:43:53.268 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:43:53.269 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:43:53.269 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:44:55.214 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:44:55.214 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:44:55.215 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:44:55.215 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:44:59.595 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:44:59.596 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:44:59.597 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:44:59.597 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:45:02.191 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:45:02.192 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:45:02.192 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:45:02.193 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:45:45.872 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:45:45.872 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:45:45.873 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:45:45.873 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:45:47.086 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:45:47.087 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:45:47.088 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:45:47.089 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:45:54.847 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:45:54.848 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:45:54.848 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:45:54.848 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 12:45:55.440 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 12:45:55.441 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 12:45:55.442 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 12:45:55.443 - INFO - root - logging_config.py:52 - setup_logging - ==================================================

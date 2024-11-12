@@ -1,6 +1,6 @@
 import streamlit as st
 from utils.data_analyzer import (get_basic_info, analyze_data_types, analyze_duplicates, 
-                               get_numerical_stats, analyze_outliers)
+                               get_numerical_stats, analyze_outliers, analyze_trends_and_seasonality, detect_anomalies)
 from utils.data_visualizer import (create_histogram, create_box_plot, create_scatter_plot,
                                 plot_correlation_matrix, plot_missing_values, plot_outliers)
 from utils.data_processor import (change_column_type, handle_missing_values, 
@@ -11,6 +11,7 @@ from datetime import datetime
 from pathlib import Path
 import logging
 import pandas as pd
+import numpy as np
 
 def show_overview_tab(df):
     st.header("Обзор")
@@ -24,14 +25,55 @@ def show_analysis_tab(df):
     get_numerical_stats(df)
     plot_missing_values(df)
 
-    # --- Добавлено: Анализ трендов и сезонности ---
+    # --- Анализ трендов и сезонности ---
     st.subheader("Анализ трендов и сезонности")
-    analyze_trends_and_seasonality(df)
+    
+    # Определение столбцов с датами
+    date_columns = df.select_dtypes(include=['datetime64']).columns.tolist()
+    # Если нет датафрейм столбцов, проверяем object столбцы
+    if not date_columns:
+        for col in df.select_dtypes(include=['object']).columns:
+            try:
+                pd.to_datetime(df[col], errors='raise')
+                date_columns.append(col)
+            except:
+                continue
+                
+    # Определение числовых столбцов
+    numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+    
+    if not date_columns:
+        st.warning("В датасете не найдены столбцы с датами")
+        return
+        
+    if not numeric_columns:
+        st.warning("В д��тасете не найдены числовые столбцы")
+        return
+        
+    date_column = st.selectbox(
+        "Выберите столбец даты",
+        date_columns,
+        key='date_column_select'
+    )
+    
+    value_column = st.selectbox(
+        "Выберите столбец значений",
+        numeric_columns,
+        key='value_column_select'
+    )
+    
+    if date_column and value_column:
+        analyze_trends_and_seasonality(df, date_column, value_column)
 
-    # --- Добавлено: Обнаружение аномалий ---
+    # --- Обнаружение аномалий ---
     st.subheader("Обнаружение аномалий")
-    detect_anomalies(df)
-
+    anomaly_column = st.selectbox(
+        "Выберите столбец для обнаружения аномалий", 
+        numeric_columns,
+        key='anomaly_column_select'
+    )
+    if anomaly_column:
+        detect_anomalies(df, anomaly_column)
 
 def show_visualization_tab(df):
     st.header("Визуализация")
@@ -59,7 +101,7 @@ def show_preprocessing_tab(df):
     st.header("Предобработка")
     process_type = st.selectbox(
         "Выберите тип обработки", 
-        ["Изменение типов данных", "Обработка пропусков", "Удаление дубликатов"]
+        ["Изменение типов данных", "Обработка проп��сков", "Удаление дубликатов"]
     )
     
     if process_type == "Изменение типов данных":
@@ -125,15 +167,3 @@ def show_reports_tab(df):
                     )
             except Exception as e:
                 st.error(f"Ошибка при создании отчета: {str(e)}")
-
-def analyze_trends_and_seasonality(df):
-    """
-    Функция для анализа трендов и сезонности (пока пустая)
-    """
-    st.write("Функционал анализа трендов и сезонности будет добавлен позже.")
-
-def detect_anomalies(df):
-    """
-    Функция для обнаружения аномалий (пока пустая)
-    """
-    st.write("Функционал обнаружения аномалий будет добавлен позже.")

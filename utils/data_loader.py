@@ -5,6 +5,7 @@ from pathlib import Path
 import gzip
 import zipfile
 import logging
+from utils.database import save_dataframe
 
 def detect_encoding(file_path: str) -> str:
     """Упрощенное определение кодировки файла"""
@@ -157,3 +158,21 @@ def get_file_uploader():
                 
             return df
     return None
+
+def load_test_data():
+    """Загрузка тестового набора данных"""
+    test_file = Path('test_data.csv')
+    if not test_file.exists():
+        st.error("Тестовый файл не найден")
+        logging.error("Test file not found: test_data.csv")
+        return None
+    try:
+        df = pd.read_csv(test_file)
+        if save_dataframe(df, source='test_data'):
+            st.success("✅ Тестовые данные успешно сохранены в базу данных")
+            logging.info("Test data successfully loaded and saved")
+        return df
+    except Exception as e:
+        logging.error(f"Error loading test data: {str(e)}")
+        st.error(f"Ошибка при загрузке тестовых данных: {str(e)}")
+        return None
