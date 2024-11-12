@@ -679,3 +679,799 @@ Traceback (most recent call last):
 ValueError: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
 2024-11-12 13:38:01.302 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
 2024-11-12 13:38:01.304 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 13:54:27.350 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:27.351 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:27.352 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:27.352 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:29.983 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:29.984 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:29.984 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:29.984 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:30.022 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 13:54:31.413 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:31.414 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:31.416 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:31.416 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:34.175 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:34.175 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:34.175 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:34.176 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:36.807 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:36.808 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:36.808 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:36.809 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:39.117 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:39.120 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:39.121 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:39.121 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:40.843 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:40.844 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:40.845 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:40.845 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:40.853 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_135440.pdf
+2024-11-12 13:54:40.856 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 13:54:40.857 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_135440.pdf, sections=['Базовая информация', 'Типы данных', 'Пропущенные значения', 'Дубликаты', 'Статистика']
+2024-11-12 13:54:40.870 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_135440.pdf
+2024-11-12 13:54:40.871 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+2024-11-12 13:54:40.875 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+2024-11-12 13:54:40.877 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 13:54:45.090 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:45.091 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:45.092 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:45.093 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:49.804 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:49.805 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:49.806 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:49.806 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:49.850 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 13:54:52.651 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:52.652 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:52.652 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:52.652 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:58.048 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:58.049 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:58.049 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:58.050 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:54:58.974 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:54:58.975 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:54:58.975 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:54:58.976 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:00.121 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:55:00.122 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:55:00.122 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:55:00.122 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:00.699 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:55:00.700 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:55:00.701 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:55:00.701 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:01.598 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:55:01.599 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:55:01.599 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:55:01.600 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:02.317 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:55:02.318 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:55:02.318 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:55:02.319 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:03.724 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:55:03.724 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:55:03.724 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:55:03.725 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:04.246 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:55:04.246 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:55:04.246 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:55:04.247 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:05.900 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:55:05.901 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:55:05.902 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:55:05.903 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:06.422 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:55:06.424 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:55:06.425 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:55:06.425 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:08.714 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:55:08.715 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:55:08.715 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:55:08.716 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:55:08.724 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_135508.pdf
+2024-11-12 13:55:08.726 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 13:55:08.726 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_135508.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 13:55:08.730 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_135508.pdf
+2024-11-12 13:55:08.731 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+2024-11-12 13:55:08.734 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+2024-11-12 13:55:08.735 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 13:57:22.889 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:22.889 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:22.890 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:22.890 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:25.687 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:25.690 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:25.690 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:25.691 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:25.734 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 13:57:27.458 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:27.460 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:27.460 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:27.460 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:28.136 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:28.137 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:28.139 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:28.140 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:28.931 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:28.932 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:28.932 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:28.933 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:29.524 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:29.525 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:29.526 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:29.527 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:30.280 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:30.281 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:30.281 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:30.282 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:30.885 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:30.886 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:30.887 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:30.887 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:31.468 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:31.469 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:31.470 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:31.471 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:32.139 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:32.140 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:32.140 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:32.140 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:32.729 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:32.730 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:32.730 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:32.730 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:33.494 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:33.495 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:33.497 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:33.498 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:34.373 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:34.376 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:34.377 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:34.377 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:36.178 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:57:36.179 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:57:36.180 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:57:36.181 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:57:36.187 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_135736.pdf
+2024-11-12 13:57:36.189 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 13:57:36.189 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_135736.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 13:57:36.192 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_135736.pdf
+2024-11-12 13:57:36.193 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+2024-11-12 13:57:36.196 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+2024-11-12 13:57:36.197 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 13:59:16.215 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:59:16.216 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:59:16.217 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:59:16.217 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:59:19.024 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:59:19.024 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:59:19.025 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:59:19.026 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:59:19.066 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 13:59:22.256 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:59:22.257 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:59:22.258 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:59:22.258 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:59:22.966 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:59:22.967 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:59:22.968 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:59:22.969 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:59:23.565 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:59:23.566 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:59:23.566 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:59:23.567 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:59:24.144 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:59:24.145 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:59:24.145 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:59:24.145 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:59:24.991 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:59:24.992 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:59:24.992 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:59:24.993 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:59:26.540 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 13:59:26.540 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 13:59:26.541 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 13:59:26.541 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 13:59:26.545 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_135926.pdf
+2024-11-12 13:59:26.547 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 13:59:26.548 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_135926.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 13:59:26.550 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_135926.pdf
+2024-11-12 13:59:26.551 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+2024-11-12 13:59:26.553 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x000001AB9C231DA0>': 'pdf'
+2024-11-12 13:59:26.554 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 14:00:06.037 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:06.038 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:06.039 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:06.039 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:07.796 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:07.797 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:07.799 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:07.799 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:07.850 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 14:00:10.774 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:10.775 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:10.775 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:10.776 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:12.397 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:12.400 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:12.401 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:12.401 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:12.999 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:13.000 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:13.001 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:13.002 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:14.408 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:14.409 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:14.409 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:14.409 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:15.203 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:15.205 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:15.206 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:15.206 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:15.915 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:15.916 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:15.916 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:15.918 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:16.749 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:16.750 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:16.752 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:16.752 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:18.708 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:00:18.709 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:00:18.709 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:00:18.710 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:00:18.716 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_140018.pdf
+2024-11-12 14:00:18.718 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 14:00:18.719 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_140018.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 14:00:18.721 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_140018.pdf
+2024-11-12 14:00:18.925 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:00:18.928 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:00:18.929 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 14:02:47.646 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:47.647 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:47.648 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:47.648 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:49.921 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:49.922 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:49.922 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:49.923 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:49.962 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 14:02:52.258 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:52.259 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:52.260 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:52.260 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:53.136 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:53.137 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:53.137 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:53.138 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:53.842 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:53.843 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:53.844 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:53.845 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:54.609 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:54.609 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:54.609 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:54.610 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:55.322 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:55.322 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:55.323 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:55.323 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:55.972 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:55.973 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:55.973 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:55.974 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:57.519 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:57.520 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:57.520 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:57.520 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:58.894 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:02:58.895 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:02:58.896 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:02:58.896 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:02:58.901 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_140258.pdf
+2024-11-12 14:02:58.903 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 14:02:58.904 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_140258.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 14:02:58.908 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_140258.pdf
+2024-11-12 14:02:58.908 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:02:58.910 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:02:58.912 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 14:03:03.268 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:03:03.269 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:03:03.269 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:03:03.269 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:03:04.164 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:03:04.165 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:03:04.165 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:03:04.166 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:03:05.480 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:03:05.481 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:03:05.481 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:03:05.482 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:03:05.488 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_140305.pdf
+2024-11-12 14:03:05.490 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 14:03:05.491 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_140305.pdf, sections=['Базовая информация', 'Типы данных', 'Пропущенные значения', 'Дубликаты']
+2024-11-12 14:03:05.500 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_140305.pdf
+2024-11-12 14:03:05.501 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:03:05.503 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:03:05.505 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 14:04:49.674 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:04:49.675 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:04:49.675 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:04:49.676 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:04:52.634 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:04:52.634 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:04:52.634 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:04:52.635 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:04:52.671 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 14:04:53.860 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:04:53.860 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:04:53.862 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:04:53.862 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:04:55.013 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:04:55.015 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:04:55.015 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:04:55.016 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:04:55.816 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:04:55.817 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:04:55.819 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:04:55.819 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:04:56.278 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:04:56.279 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:04:56.280 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:04:56.281 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:04:56.852 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:04:56.854 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:04:56.854 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:04:56.855 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:04:59.129 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:04:59.129 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:04:59.130 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:04:59.131 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:04:59.723 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:04:59.724 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:04:59.724 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:04:59.725 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:05:01.216 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:05:01.218 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:05:01.218 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:05:01.218 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:05:01.225 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_140501.pdf
+2024-11-12 14:05:01.227 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 14:05:01.228 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_140501.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 14:05:01.232 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_140501.pdf
+2024-11-12 14:05:01.232 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:05:01.235 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:05:01.236 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 14:28:56.288 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:28:56.289 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:28:56.290 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:28:56.292 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:03.788 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:03.790 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:03.790 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:03.791 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:03.841 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 14:29:06.893 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:06.894 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:06.895 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:06.895 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:07.474 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:07.475 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:07.475 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:07.476 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:08.152 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:08.154 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:08.154 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:08.154 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:09.406 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:09.406 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:09.407 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:09.408 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:11.600 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:11.601 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:11.602 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:11.603 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:12.433 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:12.434 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:12.435 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:12.435 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:13.350 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:13.351 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:13.351 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:13.352 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:15.041 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:15.041 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:15.042 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:15.043 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:15.048 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_142915.pdf
+2024-11-12 14:29:15.049 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 14:29:15.051 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_142915.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 14:29:15.056 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_142915.pdf
+2024-11-12 14:29:15.057 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:29:15.060 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:29:15.061 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 14:29:18.376 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:18.377 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:18.378 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:18.378 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:20.071 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:29:20.073 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:29:20.076 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:29:20.077 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:29:20.085 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_142920.pdf
+2024-11-12 14:29:20.088 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 14:29:20.089 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_142920.pdf, sections=['Базовая информация', 'Типы данных', 'Пропущенные значения']
+2024-11-12 14:29:20.095 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_142920.pdf
+2024-11-12 14:29:20.096 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:29:20.098 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:29:20.099 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 14:31:26.069 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:26.070 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:26.070 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:26.071 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:28.162 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:28.162 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:28.163 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:28.163 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:28.207 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 14:31:30.546 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:30.547 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:30.547 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:30.548 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:32.278 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:32.279 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:32.280 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:32.280 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:32.288 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_143132.pdf
+2024-11-12 14:31:32.292 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 14:31:32.293 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_143132.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 14:31:32.298 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_143132.pdf
+2024-11-12 14:31:32.300 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:31:32.303 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:31:32.305 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 14:31:34.975 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:34.976 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:34.977 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:34.977 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:36.509 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:36.510 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:36.510 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:36.511 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:37.049 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:37.050 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:37.051 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:37.051 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:37.848 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:37.850 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:37.851 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:37.851 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:38.440 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:38.441 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:38.441 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:38.442 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:39.248 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:39.249 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:39.250 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:39.250 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:39.782 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:39.783 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:39.783 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:39.784 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:41.586 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:41.586 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:41.587 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:41.587 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:42.655 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:42.657 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:42.657 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:42.657 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:45.187 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:45.188 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:45.188 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:45.188 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:46.796 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 14:31:46.798 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 14:31:46.799 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 14:31:46.799 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 14:31:46.803 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_143146.pdf
+2024-11-12 14:31:46.807 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 14:31:46.808 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_143146.pdf, sections=['Базовая информация', 'Типы данных', 'Пропущенные значения']
+2024-11-12 14:31:46.816 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_143146.pdf
+2024-11-12 14:31:46.817 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:31:46.820 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 14:31:46.821 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 15:05:57.714 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:05:57.716 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:05:57.717 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:05:57.717 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:06:07.120 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:06:07.121 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:06:07.121 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:06:07.122 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:06:07.168 - INFO - root - data_loader.py:173 - load_test_data - Test data successfully loaded and saved
+2024-11-12 15:06:10.864 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:06:10.865 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:06:10.865 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:06:10.865 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:08:02.646 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:08:02.647 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:08:02.647 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:08:02.647 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:08:13.697 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:08:13.698 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:08:13.698 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:08:13.699 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:08:16.581 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:08:16.582 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:08:16.583 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:08:16.583 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:08:22.266 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:08:22.266 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:08:22.267 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:08:22.267 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:08:23.878 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:08:23.878 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:08:23.879 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:08:23.880 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:08:30.534 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:08:30.535 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:08:30.536 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:08:30.537 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:08:43.162 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:08:43.162 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:08:43.162 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:08:43.163 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:09:00.004 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:09:00.005 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:09:00.005 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:09:00.006 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:09:02.452 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:09:02.453 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:09:02.454 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:09:02.454 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:09:02.544 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_150902.pdf
+2024-11-12 15:09:02.546 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 2 колонок
+2024-11-12 15:09:02.546 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_150902.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 15:09:02.549 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_150902.pdf
+2024-11-12 15:09:02.550 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 15:09:02.552 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 15:09:02.553 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 15:12:27.524 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:12:27.526 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:12:27.526 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:12:27.526 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:12:31.840 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:12:31.840 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:12:31.841 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:12:31.841 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:12:33.193 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:12:33.195 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:12:33.195 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:12:33.196 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:12:33.203 - INFO - utils.report_generator - report_generator.py:142 - generate_data_report - Создание отчета: C:\automl\reports\reports\report_20241112_151233.pdf
+2024-11-12 15:12:33.206 - INFO - root - report_generator.py:34 - _prepare_datatypes - Типы данных успешно преобразованы для 3 колонок
+2024-11-12 15:12:33.208 - INFO - utils.report_generator - report_generator.py:46 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\reports\report_20241112_151233.pdf, sections=['Базовая информация', 'Типы данных']
+2024-11-12 15:12:33.213 - INFO - utils.report_generator - report_generator.py:111 - generate_report - Сохранение отчета в файл: C:\automl\reports\reports\report_20241112_151233.pdf
+2024-11-12 15:12:33.214 - ERROR - utils.report_generator - report_generator.py:120 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+Traceback (most recent call last):
+  File "C:\automl\utils\report_generator.py", line 112, in generate_report
+    with pd.ExcelWriter(fname, engine='openpyxl') as writer:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_openpyxl.py", line 61, in __init__
+    super().__init__(
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1221, in __init__
+    self.check_extension(ext)
+  File "C:\Users\Mih10\anaconda3\envs\automl\Lib\site-packages\pandas\io\excel\_base.py", line 1340, in check_extension
+    raise ValueError(f"Invalid extension for engine '{cls.engine}': '{ext}'")
+ValueError: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 15:12:33.217 - ERROR - root - report_generator.py:122 - generate_report - Ошибка при генерации отчета: Invalid extension for engine '<property object at 0x00000260FF568AE0>': 'pdf'
+2024-11-12 15:12:33.218 - ERROR - utils.report_generator - report_generator.py:151 - generate_data_report - Не удалось создать отчет
+2024-11-12 15:17:10.331 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:17:10.332 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:17:10.332 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:17:10.332 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:17:17.861 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:17:17.863 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:17:17.863 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:17:17.864 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:17:21.199 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:17:21.200 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:17:21.200 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:17:21.200 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:17:48.002 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:17:48.003 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:17:48.004 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:17:48.004 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:17:48.640 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:17:48.641 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:17:48.641 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:17:48.641 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:17:51.621 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:17:51.622 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:17:51.622 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:17:51.623 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:17:54.309 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:17:54.310 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:17:54.311 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:17:54.311 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:18:02.928 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:18:02.929 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:18:02.930 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:18:02.930 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:18:12.017 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:18:12.020 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:18:12.022 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:18:12.023 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:18:20.820 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:18:20.821 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:18:20.821 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:18:20.822 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:18:22.000 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:18:22.001 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:18:22.002 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:18:22.003 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:18:22.809 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:18:22.811 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:18:22.811 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:18:22.811 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:18:23.966 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:18:23.969 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:18:23.970 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:18:23.971 - INFO - root - logging_config.py:52 - setup_logging - ==================================================
+2024-11-12 15:18:24.063 - INFO - utils.report_generator - report_generator.py:168 - generate_data_report - Создание отчета: C:\automl\reports\report_20241112_151824.xlsx
+2024-11-12 15:18:24.065 - INFO - root - report_generator.py:37 - _prepare_datatypes - Типы данных успешно преобразованы для 2 колонок
+2024-11-12 15:18:24.065 - INFO - utils.report_generator - report_generator.py:49 - generate_report - Начало генерации отчета. Параметры: fname=C:\automl\reports\report_20241112_151824.xlsx, sections=['Базовая информация', 'Типы данных']
+2024-11-12 15:18:24.067 - INFO - utils.report_generator - report_generator.py:114 - generate_report - Сохранение отчета в файл: C:\automl\reports\report_20241112_151824.xlsx
+2024-11-12 15:18:24.113 - INFO - root - report_generator.py:142 - generate_report - Отчет успешно сохранен: C:\automl\reports\report_20241112_151824.xlsx
+2024-11-12 15:18:24.114 - INFO - utils.report_generator - report_generator.py:184 - generate_data_report - Отчет успешно создан: C:\automl\reports\report_20241112_151824.xlsx
+2024-11-12 15:18:26.492 - INFO - root - logging_config.py:49 - setup_logging - ==================================================
+2024-11-12 15:18:26.493 - INFO - root - logging_config.py:50 - setup_logging - Логирование инициализировано успешно
+2024-11-12 15:18:26.494 - INFO - root - logging_config.py:51 - setup_logging - Тестовая русская строка
+2024-11-12 15:18:26.494 - INFO - root - logging_config.py:52 - setup_logging - ==================================================

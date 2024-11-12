@@ -5,6 +5,9 @@ from datetime import datetime
 import logging
 from pathlib import Path
 import io
+import openpyxl
+from openpyxl.styles import Font, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
 
 logger = logging.getLogger(__name__)
 
@@ -112,6 +115,29 @@ class ReportGenerator:
             with pd.ExcelWriter(fname, engine='openpyxl') as writer:
                 for sheet_name, df_sheet in excel_sheets.items():
                     df_sheet.to_excel(writer, sheet_name=sheet_name, index=False)
+                    
+                    # Улучшение стиля Excel
+                    workbook = writer.book
+                    worksheet = writer.sheets[sheet_name]
+                    
+                    # Автоматическая ширина столбцов
+                    for col in worksheet.columns:
+                        max_length = 0
+                        column = get_column_letter(col[0].column)
+                        for cell in col:
+                            try:
+                                if len(str(cell.value)) > max_length:
+                                    max_length = len(cell.value)
+                            except:
+                                pass
+                        adjusted_width = (max_length + 2)
+                        worksheet.column_dimensions[column].width = adjusted_width
+                    
+                    # Стили для заголовков
+                    header_font = Font(bold=True)
+                    for cell in worksheet[1]:
+                        cell.font = header_font
+                        cell.alignment = Alignment(horizontal='center')
             
             logging.info(f"Отчет успешно сохранен: {fname}")
             return fname

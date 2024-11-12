@@ -1,4 +1,9 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+from datetime import datetime
+import logging
+import os
 from utils.data_analyzer import (get_basic_info, analyze_data_types, analyze_duplicates, 
                                get_numerical_stats, analyze_outliers, analyze_trends_and_seasonality, detect_anomalies)
 from utils.data_visualizer import (create_histogram, create_box_plot, create_scatter_plot,
@@ -7,11 +12,7 @@ from utils.data_processor import (change_column_type, handle_missing_values,
                                remove_duplicates, export_data)
 from utils.database import (delete_dataframe, get_table_info)
 from utils.report_generator import generate_data_report
-from datetime import datetime
 from pathlib import Path
-import logging
-import pandas as pd
-import numpy as np
 
 def show_overview_tab(df):
     st.header("Обзор")
@@ -26,7 +27,7 @@ def show_analysis_tab(df):
     plot_missing_values(df)
 
     # --- Анализ трендов и сезонности ---
-    st.subheader("Анализ тренд��в и сезонности")
+    st.subheader("Анализ трендов и сезонности")
     
     # Определение столбцов с датами
     date_columns = df.select_dtypes(include=['datetime64']).columns.tolist()
@@ -189,15 +190,15 @@ def show_reports_tab(df):
                 result = generate_data_report(
                     df=df,
                     sections=report_sections,
-                    fname=f'reports/report_{timestamp}.pdf'
+                    fname=f'report_{timestamp}.xlsx'
                 )
                 if result:
                     st.success("✅ Отчет успешно создан")
                     st.download_button(
                         "⬇️ Скачать отчет",
-                        result,
-                        f"report_{timestamp}.pdf",
-                        "application/pdf"
+                        open(result, 'rb').read(),
+                        os.path.basename(result),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     )
             except Exception as e:
                 st.error(f"Ошибка при создании отчета: {str(e)}")
