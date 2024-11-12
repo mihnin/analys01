@@ -4,11 +4,20 @@ import io
 
 def change_column_type(df, column, new_type):
     """
-    Изменение типа данных столбца
+    Изменение типа данных столбца с проверкой наличия пустых значений
     """
     try:
+        # Проверка наличия пустых значений
+        if df[column].isnull().any():
+            # Если есть пустые значения, вызываем специальное исключение
+            raise ValueError(f"В столбце {column} есть пустые значения. Сначала обработайте их.")
+        
+        # Попытка изменения типа данных
         df[column] = df[column].astype(new_type)
         return df, True
+    except ValueError as ve:
+        st.error(str(ve))
+        return df, False
     except Exception as e:
         st.error(f"Ошибка при изменении типа данных: {str(e)}")
         return df, False
