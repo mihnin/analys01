@@ -106,8 +106,31 @@ def show_preprocessing_tab(df):
     )
     
     if process_type == "Изменение типов данных":
-        # ...existing code for changing data types...
-        pass  # Ваш существующий код
+        column = st.selectbox("Выберите столбец", df.columns)
+        current_type = str(df[column].dtype)
+        
+        # Определение возможных типов данных
+        type_options = {
+            'Целое число (int)': 'int64',
+            'Число с плавающей точкой (float)': 'float64',
+            'Строка (string)': 'str',
+            'Дата (datetime)': 'datetime64',
+            'Булево значение (bool)': 'bool'
+        }
+        
+        new_type = st.selectbox(
+            f"Текущий тип: {current_type}. Выберите новый тип:", 
+            list(type_options.keys())
+        )
+        
+        if st.button("Применить изменение типа"):
+            selected_type = type_options[new_type]
+            df, success = change_column_type(df, column, selected_type)
+            
+            if success:
+                st.session_state['df'] = df
+                st.success(f"✅ Тип столбца {column} успешно изменен на {new_type}")
+                st.dataframe(df.head())  # Отобразить обновленный DataFrame
 
     elif process_type == "Обработка пропусков":
         column = st.selectbox("Выберите столбец", df.columns)
