@@ -1,3 +1,4 @@
+import os  # Добавляем импорт os
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -121,7 +122,7 @@ def show_preprocessing_tab(df):
         }
         
         new_type = st.selectbox(
-            f"Текущий тип: {current_type}. Выбер��те новый тип:", 
+            f"Текущий тип: {current_type}. Выберите новый тип:", 
             list(type_options.keys())
         )
         
@@ -212,7 +213,7 @@ def show_reports_tab(df):
                     st.download_button(
                         "⬇️ Скачать отчет",
                         open(result, 'rb').read(),
-                        os.path.basename(result),
+                        os.path.basename(result),  # теперь os импортирован
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     )
             except Exception as e:
