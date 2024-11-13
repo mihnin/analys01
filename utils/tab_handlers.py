@@ -2,17 +2,19 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
-import logging
-import os
 from utils.data_analyzer import (get_basic_info, analyze_data_types, analyze_duplicates, 
-                               get_numerical_stats, analyze_outliers, analyze_trends_and_seasonality, detect_anomalies)
+                                 get_numerical_stats, analyze_outliers, 
+                                 analyze_trends_and_seasonality, detect_anomalies)
 from utils.data_visualizer import (create_histogram, create_box_plot, create_scatter_plot,
-                                plot_correlation_matrix, plot_missing_values, plot_outliers)
+                                   plot_correlation_matrix, plot_missing_values, plot_outliers)
 from utils.data_processor import (change_column_type, handle_missing_values, 
-                               remove_duplicates, export_data)
-from utils.database import (delete_dataframe, get_table_info)
+                                  remove_duplicates, export_data)
+# from utils.database import delete_dataframe, get_table_info
 from utils.report_generator import generate_data_report
-from pathlib import Path
+
+def get_numeric_columns(df):
+    """Получение списка числовых столбцов"""
+    return df.select_dtypes(include=[np.number]).columns.tolist()
 
 def show_overview_tab(df):
     st.header("Обзор")
@@ -41,7 +43,7 @@ def show_analysis_tab(df):
                 continue
                 
     # Определение числовых столбцов
-    numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+    numeric_columns = get_numeric_columns(df)
     
     if not date_columns:
         st.warning("В датасете не найдены столбцы с датами")
@@ -119,7 +121,7 @@ def show_preprocessing_tab(df):
         }
         
         new_type = st.selectbox(
-            f"Текущий тип: {current_type}. Выберите новый тип:", 
+            f"Текущий тип: {current_type}. Выбер��те новый тип:", 
             list(type_options.keys())
         )
         
@@ -166,6 +168,8 @@ def show_preprocessing_tab(df):
         if st.button("Удалить дубликаты"):
             keep = keep_mapping[keep_option]
             df, success = remove_duplicates(df, subset=subset if subset else None, keep=keep)
+            # Удаляем вызов delete_dataframe()
+            # delete_dataframe(df)
             if success:
                 st.session_state['df'] = df
                 st.success("✅ Дубликаты успешно удалены")
@@ -184,18 +188,6 @@ def show_export_tab(df):
                 f"export.{file_ext}",
                 mime_type
             )
-
-def show_database_tab(df):
-    st.header("База данных")
-    table_info = get_table_info()
-    if table_info:
-        for key, value in table_info.items():
-            st.write(f"**{key}:** {value}")
-    if st.button("❌ Очистить базу данных"):
-        if delete_dataframe():
-            st.session_state.pop('df', None)
-            st.success("✅ База данных успешно очищена")
-            st.rerun()
 
 def show_reports_tab(df):
     st.header("Отчеты")

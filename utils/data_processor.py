@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+import io
 
 def change_column_type(df, column, new_type):
     """
@@ -61,3 +62,22 @@ def add_computed_column(df, new_column_name, formula):
     except Exception as e:
         st.error(f"Ошибка при добавлении расчетного столбца: {str(e)}")
         return df, False
+
+def export_data(df, format_type):
+    """
+    Экспорт данных в выбранном формате
+    """
+    try:
+        if format_type == 'csv':
+            output = io.StringIO()
+            df.to_csv(output, index=False)
+            return output.getvalue(), 'text/csv', 'csv'
+        elif format_type == 'excel':
+            output = io.BytesIO()
+            df.to_excel(output, index=False)
+            return output.getvalue(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'xlsx'
+        else:
+            raise ValueError(f"Неподдерживаемый формат: {format_type}")
+    except Exception as e:
+        st.error(f"Ошибка при экспорте данных: {str(e)}")
+        return None, None, None

@@ -5,7 +5,6 @@ from pathlib import Path
 import gzip
 import zipfile
 import logging
-from utils.database import save_dataframe
 
 def detect_encoding(file_path: str) -> str:
     """Упрощенное определение кодировки файла"""
@@ -26,13 +25,11 @@ def validate_file(file) -> bool:
     if file is None:
         return False
     
-    # Проверка размера файла (например, макс. 100MB)
     MAX_FILE_SIZE = 100 * 1024 * 1024
     if file.size > MAX_FILE_SIZE:
         st.error("Файл слишком большой (максимум 100MB)")
         return False
         
-    # Проверка расширения
     allowed_extensions = {'.csv', '.xlsx', '.xls', '.gz', '.zip'}
     file_ext = Path(file.name).suffix.lower()
     if file_ext not in allowed_extensions:
@@ -63,8 +60,8 @@ def parse_datetime_columns(df: pd.DataFrame) -> pd.DataFrame:
     # Список возможных форматов даты
     date_formats = [
         '%Y-%m-%d', '%d.%m.%Y', '%m/%d/%Y', 
-        '%Y/%m/%d', '%d-%m-%Y', '%m-%d-%Y',
-        '%Y-%m-%d %H:%M:%S', '%d.%m.%Y %H:%M:%S'
+        '%Y/%m/%d', '%d-%m-%Y', '%m-%д-%Y',
+        '%Y-%м-%д %H:%M:%S', '%d.%м.%Y %H:%М:%S'
     ]
     
     # Поиск столбцов с потенциальными датами
@@ -168,9 +165,6 @@ def load_test_data():
         return None
     try:
         df = pd.read_csv(test_file)
-        if save_dataframe(df, source='test_data'):
-            st.success("✅ Тестовые данные успешно сохранены в базу данных")
-            logging.info("Test data successfully loaded and saved")
         return df
     except Exception as e:
         logging.error(f"Error loading test data: {str(e)}")
